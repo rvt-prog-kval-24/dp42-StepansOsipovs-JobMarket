@@ -1,0 +1,155 @@
+.productList {
+  /* justify-content: space-between;*/
+  flex-wrap: wrap;
+  display: flex;
+  padding: 1% 1% 5% 5%;
+  flex-direction: column;
+
+}
+
+/*.circle {*/
+/*  position: absolute;*/
+/*  width: 100px; !* Диаметр круга (замените на свои значения) *!*/
+/*  height: 100px; !* Диаметр круга (замените на свои значения) *!*/
+/*  background-color: #3498db; !* Цвет фона круга (по желанию) *!*/
+/*  border-radius: 50%; !* Создание круглой формы *!*/
+/*  top: 50%; !* Равноудаленный от верхней границы *!*/
+/*  transform: translateY(-50%); !* Смещение на -50% высоты, чтобы выровнять по центру *!*/
+/*  left: 0; !* Расположение круга в левой части родителя *!*/
+/*}*/
+
+/*.circle img {*/
+/*  width: 100%; !* Ширина изображения (такая же, как и у круга) *!*/
+/*  height: 100%; !* Высота изображения (такая же, как и у круга) *!*/
+/*  object-fit: cover; !* Масштабирование изображения, чтобы оно заполнило круг полностью *!*/
+/*  border-radius: 50%; !* Устанавливаем радиус для изображения *!*/
+/*}*/
+.circle {
+  position: absolute;
+  width: 15%; /* Диаметр круга (замените на свои значения) */
+  height: 100%; /* Диаметр круга (замените на свои значения) */
+  background-color: #3498db; /* Цвет фона круга (по желанию) */
+  border-radius: 50%; /* Создание круглой формы */
+  top: 50%; /* Равноудаленный от верхней границы */
+  transform: translateY(-50%); /* Смещение на -50% высоты, чтобы выровнять по центру */
+  left: 0; /* Расположение круга в левой части родителя */
+}
+
+.circle img {
+  width: 100%; /* Ширина изображения (такая же, как и у круга) */
+  height: 100%; /* Высота изображения (такая же, как и у круга) */
+  object-fit: cover; /* Масштабирование изображения, чтобы оно заполнило круг полностью */
+  /*border-radius: 50%; !* Устанавливаем радиус для изображения *!*/
+}
+
+.product {
+  width: 90%;
+  height: 130px;
+  border: 1px solid black;
+  margin: 1% 5% 1% 5%;
+  position: relative;
+  text-align: left;
+
+}
+
+
+.pageExample{
+  text-align: left;
+}
+
+.content {
+  align-content: center;
+  margin-left: 17%;
+  flex: 1; /* Растягиваем остальной контент на всю доступную ширину */
+  /*border: 2px solid red;*/
+}
+
+
+.filter{
+  color: #3498db;
+  text-align: center;
+  padding-top: 5%;
+}
+
+.content p {
+  margin: 0; /* Убираем внешние отступы у абзацев в контенте */
+}
+/*.product {*/
+/*  width: 90%;*/
+/*  height: 130px;*/
+/*  border: 2px solid black;*/
+/*  !*padding: 2% 2% 2% 2%;*!*/
+/*  !*text-align: left;*!*/
+/*  display: inline-block;*/
+/*  !*margin-right: 2%;*!*/
+/*  margin: 1% 5% 1% 5%;*/
+/*  position: relative;*/
+/*}*/
+/*.product {*/
+/*  width: 90%;*/
+/*  height: 130px;*/
+/*  border: 2px solid black;*/
+/*  padding: 10px 0 0 0;*/
+/*  text-align: center;*/
+/*  display: block; !* Заменяем display: inline-block; на display: block; *!*/
+/*  margin: 0 5% 5% 0;*/
+/*  position: relative;*/
+/*}*/
+
+
+/* Стили для левого отсека (слева) */
+.left-section {
+  flex: 1; /* Занимает всю доступную ширину внутри body */
+  background-color: #f2f2f2; /* Цвет фона левого отсека (можете изменить) */
+}
+
+/* Стили для правого отсека (справа) */
+.right-section {
+  flex: 1; /* Занимает всю доступную ширину внутри body */
+  background-color: #e0e0e0; /* Цвет фона правого отсека (можете изменить) */
+}
+
+.Mass {
+  display: flex;
+  justify-content: right;
+}
+
+header {
+  position: relative;
+}
+
+h1 {
+  display: inline-block;
+}
+
+.buttons {
+  position: absolute;
+  right: 0;
+  bottom: 20%;
+  display: inline-block;
+  margin-right: 20px;
+}
+
+.margin{
+  margin-top: 7%;
+
+}
+
+
+/*button {*/
+/*  box-shadow: 5px 5px 5px black;*/
+/*}*/
+
+.delete-checkbox {
+  padding: 15px;
+}
+
+label {
+  display: inline-block;
+  width: 150px;
+  margin: 20px 0 0 0;
+}
+
+
+
+/*# sourceMappingURL=main.module.css.map */

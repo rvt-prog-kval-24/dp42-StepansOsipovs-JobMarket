@@ -1,0 +1,16 @@
+.main-content{
+    text-align: center;
+    border: 1px solid black;
+}
+.header-example{
+    text-align: left;
+    padding-left: 2%;
+    font-weight: bold;
+
+}
+
+.salary-example{
+    text-align: left;
+    padding-left: 2%;
+    font-weight: lighter;
+}
