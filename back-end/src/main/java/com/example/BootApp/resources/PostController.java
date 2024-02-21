@@ -113,36 +113,7 @@ public static String UPLOAD_DIRECTORY = System.getProperty("test/projekti/BootAp
         return ResponseEntity.ok(postServisImpl.headers());
     }
 
-    @PostMapping("/runTests")
-    @ResponseBody
-    public String runTests() {
-        try {
-//            ProcessBuilder processBuilder = new ProcessBuilder("bat", "../test/runTest.bat");
-            ProcessBuilder processBuilder = new ProcessBuilder("cmd.exe", "/c", "C:\\test\\projekti\\BootApp\\src\\main\\java\\com\\example\\BootApp\\test\\runTest.bat");
-
-            processBuilder.redirectErrorStream(true);
-            Process process = processBuilder.start();
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            StringBuilder result = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                result.append(line).append("\n");
-            }
-
-            int exitCode = process.waitFor();
-            if (exitCode != 0) {
-                System.err.println("Ошибка при выполнении тестов. Exit Code: " + exitCode);
-                return "Ошибка при выполнении тестов.";
-            }
-
-            System.out.println("Тесты выполнены успешно:\n" + result);
-            return result.toString();
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-            return "Ошибка при выполнении тестов.";
-        }
-    }
+   
 
 
 
