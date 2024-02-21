@@ -1,0 +1,92 @@
+
+
+
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column; /* Устанавливаем вертикальное направление */
+    min-height: 100%;
+}
+
+.bigInput {
+    width: 100%; /* 100% ширины контейнера */
+    padding: 10px; /* Отступы вокруг текста */
+    font-size: 18px; /* Размер шрифта */
+    border: 2px solid #ccc; /* Граница для поля ввода */
+    border-radius: 5px; /* Закругление углов */
+}
+
+
+.leftSection, .rightSection {
+    flex: 1; /* Распределение пространства внутри flex-контейнера */
+    background-color: orange;
+    width: 20%;
+
+}
+/* Стили для маленьких кнопок */
+.smallButton {
+    display: inline-block;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    border: 2px solid #4CAF50; /* Цвет рамки кнопки */
+    border-radius: 4px; /* Закругление углов */
+    background-color: #4CAF50; /* Основной цвет фона кнопки */
+    color: #fff; /* Цвет текста кнопки */
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.small-button:hover {
+    background-color: #45a049; /* Измененный цвет фона при наведении курсора */
+    color: #fff; /* Измененный цвет текста при наведении курсора */
+}
+
+
+
+.mainContent {
+    padding: 2%;
+    background-color: white;
+    text-align: center;
+    word-wrap: break-word;
+    flex: 1; /* Занимает доступное пространство */
+}
+
+.leftSection {
+    position: absolute;
+    right: 0;
+    left: 0;
+    top: 9%;
+    bottom: 0;
+    word-wrap: break-word; /* Позволяет тексту переноситься на новую строку, если не помещается внутри секции */
+    min-height: 100%;
+
+    background: rgba(241,241,241,1);
+
+}
+
+
+.rightSection {
+    position: absolute;
+    right: 0;
+    top: 9%;
+    bottom: 0;
+    word-wrap: break-word; /* Позволяет тексту переноситься на новую строку, если не помещается внутри секции */
+    min-height: 100%;
+
+}
+.topSection {
+    background-color: purple;
+    flex: 0 0 auto;
+    height: 5%;
+}
+
+
+

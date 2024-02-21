@@ -1,0 +1,359 @@
+/*.card {*/
+/*    background: white;*/
+/*    border: 1px solid gray;*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*    margin-bottom: 20px;*/
+/*    padding: 20px;*/
+/*}*/
+
+/*.logo {*/
+/*    width: 50px;*/
+/*    height: 50px;*/
+/*    margin-right: 20px;*/
+/*}*/
+
+/*.info {*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    flex-grow: 1;*/
+/*    margin-right: 2%;*/
+/*}*/
+
+/*.title, .company, .location {*/
+/*    margin: 0;*/
+/*}*/
+
+/*.checkbox {*/
+/*    width: 20px;*/
+/*    height: 20px;*/
+/*}*/
+
+.card {
+    background: white;
+    border: 1px solid gray;
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 20px;
+}
+
+.card {
+    background: white;
+    border: 1px solid gray;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 20px;
+}
+
+.logo {
+    width: 7%;
+    height: 7%;
+    align-self: start;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-grow: 1;
+    margin-left: 20px;
+}
+
+.title, .company, .location {
+    margin: 0;
+}
+
+.checkbox {
+    width: 20px;
+    height: 20px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* задаём глобальные переменные для цветов, в которые будем окрашивать текст */
+:root {
+    --color-1: #186cb8;
+    --color-2: #2a9a9f;
+    --color-3: #f1b211;
+    --color-4: #ff6666;
+    --color-5: #f9002f;
+}
+
+/* настройки блока с текстом */
+.colored {
+    /* фон */
+    background: #8ae3da;
+    /* межстрочное расстояние */
+    line-height: 1;
+    /* подключаем сетку */
+    display: grid;
+    /* ставим содержимое в центр */
+    place-items: center;
+}
+
+.main-header {
+    /* настраиваем внешний вид шрифта */
+    font-family: sans-serif;
+    font-size: 6vw;
+    font-weight: 900;
+
+    /* подстраиваем ширину заголовка под самое длинное слово*/
+    width: -webkit-min-content;
+    width: -moz-min-content;
+    width: min-content;
+
+    /* делаем автоматические отступы */
+    margin: auto;
+    /* переводим все буквы в заглавные */
+    text-transform: uppercase;
+
+    /* делаем цветные полосы по тексту */
+    background: linear-gradient(219deg,
+    var(--color-1) 19%,
+    transparent 19%,transparent 20%,
+    var(--color-2) 20%, var(--color-2)  39%,
+    transparent 39%,transparent 40%,
+    var(--color-3) 40%,var(--color-3) 59% ,
+    transparent 59%,transparent 60%,
+    var(--color-4) 60%, var(--color-4) 79%,
+    transparent 79%, transparent 80%,
+    var(--color-5) 80%);
+    /* обрезаем фон по контуру букв */
+    background-clip: text;
+    -webkit-background-clip: text;
+
+    /* делаем заголовок прозрачным, чтобы был виден цветной фон */
+    color: transparent;
+}
+
+
+
+
+
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+.button-container {
+    display: flex;
+    justify-content: center;
+}
+.small-button {
+    display: inline-block;
+    padding: 8px 16px; /* Adjust padding to control button size */
+    background-color: #3498db; /* Button background color */
+    color: #ffffff; /* Button text color */
+    border: none;
+    border-radius: 50%; /* Make the button oval (circular) */
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s; /* Smooth hover effect */
+    margin-right: 10px; /* Add spacing between buttons */
+}
+
+.small-button:hover {
+    background-color: #2980b9; /* Hover background color */
+}
+
+header {
+    background-color: #8ae3da;
+    color: black;
+    padding: 10px 0;
+    text-align: center;
+}
+
+nav {
+    background-color: #8ae3da;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    justify-content: space-around;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #333;
+}
+
+main {
+    padding: 20px;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+}
+
+.button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+.search-container {
+    display: flex;
+    justify-content: center;
+    padding: 2%;
+    gap: 2%;
+}
+
+.search-container input[type="text"] {
+    width: 50%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.search-container button {
+    margin-left: 10px;
+    padding: 10px 20px;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+}
+
+.search-container button:hover {
+    background-color: #45a049;
+}
+
+
+select {
+    /* Reset */
+    appearance: none;
+    border: 0;
+    outline: 0;
+    font: inherit;
+    /* Personalize */
+    width: 20rem;
+    padding: 1rem 4rem 1rem 1rem;
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 320 512' width='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4 24.6-9.4 33.9 0l96.4 96.4 96.4-96.4c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9l-136 136c-9.2 9.4-24.4 9.4-33.8 0z' fill='%23FFFFFF'/%3E%3C/svg%3E") no-repeat right 0.8em center / 1.4em;
+
+    color: #100101;
+    border-radius: 0.25em;
+    box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    /* Remove IE arrow */
+    &::-ms-expand {
+        display:none;
+    }
+    /* Remove focus outline */
+    &:focus {
+        outline: none;
+    }
+    /* <option> colors */
+    & option {
+        color: black;
+        /*background-color: var(--option-bg);*/
+    }
+}
+
+
+
+.text-box {
+    /*margin-left: 44vw;*/
+    margin-top: 2vh;
+
+}
+
+.btn:link,
+.btn:visited {
+
+    text-transform: uppercase;
+    text-decoration: none;
+    /*padding: 15px 40px;*/
+    display: inline-block;
+    border-radius: 100px;
+    transition: all .2s;
+    position: absolute;
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.btn:active {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.btn-blue {
+    margin-right: 1vh;
+    background-color: white;
+    color: black;
+}
+
+.btn-white {
+    margin-right: 1vh;
+    background-color: #8ae3da;
+    color: black;
+}
+
+.btn::after {
+    content: "";
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+    border-radius: 100px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    /*transition: all .4s;*/
+}
+
+.btn-white::after {
+    background-color: white;
+}
+
+.btn:hover::after {
+    transform: scaleX(1.4) scaleY(1.6);
+    opacity: 0;
+}
+
+.btn-animated {
+    animation: moveInBottom 5s ease-out;
+    animation-fill-mode: backwards;
+}
+
+@keyframes moveInBottom {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+}
+/*-----------------------------------------*/

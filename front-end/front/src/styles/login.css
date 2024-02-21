@@ -1,0 +1,104 @@
+:root {
+    --color-1: #186cb8;
+    --color-2: #2a9a9f;
+    --color-3: #f1b211;
+    --color-4: #ff6666;
+    --color-5: #f9002f;
+}
+
+/* настройки блока с текстом */
+.colored {
+    /* фон */
+    background: #8ae3da;
+    /* межстрочное расстояние */
+    line-height: 1;
+    /* подключаем сетку */
+    display: grid;
+    /* ставим содержимое в центр */
+    place-items: center;
+}
+
+.main-header {
+    /* настраиваем внешний вид шрифта */
+    font-family: sans-serif;
+    font-size: 6vw;
+    font-weight: 900;
+
+    /* подстраиваем ширину заголовка под самое длинное слово*/
+    width: -webkit-min-content;
+    width: -moz-min-content;
+    width: min-content;
+
+    /* делаем автоматические отступы */
+    margin: auto;
+    /* переводим все буквы в заглавные */
+    text-transform: uppercase;
+
+    /* делаем цветные полосы по тексту */
+    background: linear-gradient(219deg,
+    var(--color-1) 19%,
+    transparent 19%,transparent 20%,
+    var(--color-2) 20%, var(--color-2)  39%,
+    transparent 39%,transparent 40%,
+    var(--color-3) 40%,var(--color-3) 59% ,
+    transparent 59%,transparent 60%,
+    var(--color-4) 60%, var(--color-4) 79%,
+    transparent 79%, transparent 80%,
+    var(--color-5) 80%);
+    /* обрезаем фон по контуру букв */
+    background-clip: text;
+    -webkit-background-clip: text;
+
+
+    color: transparent;
+}
+.centered-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/*form {*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    align-items: center;*/
+/*    justify-content: center;*/
+/*    height: 100%;*/
+/*}*/
+
+label {
+    margin-bottom: 1%;
+}
+
+input[type="text"],
+input[type="password"],
+button {
+    margin-bottom: 1%;
+    padding: 0.8%;
+    width: 200px;
+}
+.centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.centered form {
+    display: flex;
+    flex-direction: column;
+    gap: 100%;
+}
+
+.errorMsg{
+    color: #186CB8FF;
+    font-family: "Impact", fantasy;
+}
+
+a {
+    text-decoration: none;
+    color: #464444;
+}
+
+

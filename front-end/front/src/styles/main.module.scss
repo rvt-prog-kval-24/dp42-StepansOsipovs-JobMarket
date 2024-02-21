@@ -1,0 +1,65 @@
+
+
+
+.productList {
+
+  /* justify-content: space-between;*/
+  flex-wrap: wrap;
+
+  display:flex;
+  padding: 2% 0 0 5%;
+
+
+}
+
+.product{
+  width: 20%;
+  height: 130px;
+  border: 2px solid black;
+  padding: 20px 0 0 0;
+  text-align: center;
+  display: inline-block;
+  /*margin-right: 2%;*/
+  margin: 0 5% 5% 0 ;
+  position: relative;
+
+
+}
+.Mass{
+  display: flex;
+  justify-content: right;
+}
+
+header {
+  position: relative;
+}
+
+h1 {
+  display: inline-block;
+}
+
+.buttons {
+  position: absolute;
+  right: 0;
+  bottom: 20%;
+  display: inline-block;
+  margin-right: 20px;
+}
+
+button {
+  box-shadow:5px 5px 5px black;
+
+}
+
+
+.delete-checkbox{
+  padding: 15px;
+
+}
+label{
+  display: inline-block;
+  width: 150px;
+  margin: 20px 0 0 0;
+}
+
+/*# sourceMappingURL=main.module.css.map */
