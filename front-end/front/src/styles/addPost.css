@@ -14,3 +14,16 @@
     padding-left: 2%;
     font-weight: lighter;
 }
+.form-container {
+    border: 2px solid #ccc; /* Устанавливает толщину, стиль и цвет рамки */
+    border-radius: 10px; /* Добавляет скругление углов для рамки */
+    padding: 20px; /* Добавляет отступ внутри рамки */
+    margin-top: 5%; /* Ваше начальное значение marginTop */
+}
+.error{
+    color: red;
+}
+.required:after{
+    content: '*';
+    color: red;
+}

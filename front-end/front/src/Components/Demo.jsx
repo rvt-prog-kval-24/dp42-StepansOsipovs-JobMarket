@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import '../styles/Demo.css';
 import axios from "axios"; // Import the CSS file properly
-
+import Badge from 'react-bootstrap/Badge';
 import classes from "../styles/main.module.css";
 import PostCard from "./PostCard";
 import Cookies from "js-cookie";
@@ -62,7 +62,7 @@ const Demo = () => {
 
     }
     function goToLogin(){
-        navigate("/public/login");
+        navigate("/auf/log");
     }
 
     function getDataWithFilter(){
@@ -83,7 +83,7 @@ const Demo = () => {
     };
     useEffect(() => {
         selectProducts();
-        selectDataForFilter()
+        selectDataForFilter();
         // if (localStorage.getItem("jwt")){
         //     setIsAuth(true);
         // }
@@ -127,7 +127,6 @@ const Demo = () => {
     };
     return (
         <div>
-
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -143,103 +142,125 @@ const Demo = () => {
                         <div className="button-container text-box">
 
                             <button onClick={goToLogin} className=" btn-white ">Log in</button>
-                            <button onClick={handleClose} className=" btn-white ">Cansel</button>
+                            <button onClick={handleClose} className=" btn-white ">Cancel</button>
 
                         </div>
                     </Typography>
                 </Box>
             </Modal>
-            <header>
-                <div className={"colored"}>
+            <header style={{borderRadius:'40px'}}>
+                {/*<div className={"colored"}>*/}
                     <h1 className={"main-header"}>IT Market</h1>
-                </div>
+                {/*</div>*/}
+                {/*<nav>*/}
+                {/*    <ul style={{marginTop:'3%'}}>*/}
+                {/*        /!*<button onClick={addPost} className="btn btn-blue btn-animate">Post a job</button>*!/*/}
 
-                <nav>
-                    <ul style={{marginTop:'3%'}}>
-                        <button onClick={handleReset} className="btn btn-blue btn-animate">Search by company </button>
-                        <button onClick={addPost} className="btn btn-blue btn-animate">Post a job</button>
-                        {isAuth && (
-                            <>
-                                <button onClick={logout} className="btn btn-blue btn-animate">Logout</button>
-                                <button onClick={handleReset} className="btn btn-blue btn-animate">Your profile</button>
-                            </>
-                        )}
-                        {!isAuth && (
-                            <button onClick={goToLogin} className="btn btn-blue btn-animate">Login</button>
-                        )}
-                    </ul>
-                </nav>
-                <div className="search-container">
+                {/*    </ul>*/}
+                {/*</nav>*/}
+                {/*<div className="search-container">*/}
 
-                  <label>Find by keyword</label>
-                    <input  onChange={e => setSelectedFilterOptions({...selectedFilterOptions, postHeader: e.target.value})}
-                            type="text" placeholder="Keyword" />
-                </div>
-                {showFilter && (
-               <div className="search-container">
+                {/*  <label>*/}
+                {/*      <h5>*/}
+                {/*          <Badge bg="secondary">FIND BY KEYWORD</Badge>*/}
+                {/*      </h5>*/}
 
-                   <select
-                       defaultValue={"default"}
-                       onChange={e => setSelectedFilterOptions({...selectedFilterOptions, postType: e.target.value})}
-                   >
+                {/*  </label>*/}
+                {/*    <input  onChange={e => setSelectedFilterOptions({...selectedFilterOptions, postHeader: e.target.value})} type="text" placeholder="Keyword" />*/}
+                {/*</div>*/}
+                {/*{showFilter && (*/}
+                    <div className="search-container">
+                        <label>
+                            <h5>
+                                <Badge bg="secondary">FIND BY KEYWORD</Badge>
+                            </h5>
 
-                       <option  value=''>Work type </option>
-                       {filterOptions.postType.map((postType,index) =>
-                           <option value={postType} key={postType}> {postType}</option>
-                       )}
-                   </select>
-                   <select
-                       onChange={e => setSelectedFilterOptions({...selectedFilterOptions, company: e.target.value})}
-                        defaultValue={"default"}
-                   >
-                       <option   value="">Company</option>
+                        </label>
+                        <input style={{width:'15%'}} onChange={e => setSelectedFilterOptions({
+                            ...selectedFilterOptions,
+                            postHeader: e.target.value
+                        })} type="text" placeholder="Keyword"/>
+                        <select
+                            defaultValue={"default"}
+                            onChange={e => setSelectedFilterOptions({
+                                ...selectedFilterOptions,
+                                postType: e.target.value
+                            })}
+                        >
 
-                       {filterOptions.company.map((company,index) =>
-                           <option value={company} key={company}> {company}</option>
-                       )}
-                   </select>
-                   <select
-                       onChange={e => setSelectedFilterOptions({...selectedFilterOptions, postCity: e.target.value})}
-                       defaultValue={"default"}
-                   >
-                       {/*{ filterOptions.postCity.map((city, index) => <p key={index}>{city}</p>)}*/}
-                       <option value="">City </option>
+                            <option value=''>Work type</option>
+                            {filterOptions.postType.map((postType, index) =>
+                                <option value={postType} key={postType}> {postType}</option>
+                            )}
+                        </select>
+                        <select
+                            onChange={e => setSelectedFilterOptions({
+                                ...selectedFilterOptions,
+                                company: e.target.value
+                            })}
+                            defaultValue={"default"}
+                        >
+                            <option value="">Company</option>
+
+                            {filterOptions.company.map((company, index) =>
+                                <option value={company} key={company}> {company}</option>
+                            )}
+                        </select>
+                        <select
+                            onChange={e => setSelectedFilterOptions({
+                                ...selectedFilterOptions,
+                                postCity: e.target.value
+                            })}
+                            defaultValue={"default"}
+                        >
+                            {/*{ filterOptions.postCity.map((city, index) => <p key={index}>{city}</p>)}*/}
+                            <option value="">City</option>
 
 
-                       {filterOptions.postCity.map((city,index) =>
-                               <option value={city} key={city}> {city}</option>
-                       )}
-                   </select>
+                            {filterOptions.postCity.map((city, index) =>
+                                <option value={city} key={city}> {city}</option>
+                            )}
+                        </select>
 
+                        {/*<button style={{borderRadius: '30px'}} onClick={handleReset}*/}
+                        {/*        className="btn btn-blue btn-animate">Clear*/}
+                        {/*    filter*/}
+                        {/*</button>*/}
+                    </div>
 
-               </div>
-                )}
-                <button onClick={handleReset} className="btn btn-blue btn-animate">Clear filter</button>
+                {/*)}*/}
+                <button style={{borderRadius: '30px'}} onClick={handleReset} className="btn btn-blue btn-animate">Clear
+                    filter
+                </button>
 
-                {error ? <p><h2>{error.message}</h2>      <span role="img" aria-label="sad" style={enlargedStyle}>😔</span>
-                </p> : <p></p>}
+                {error ?
+                    <p><h2>{error.message}</h2>      <span role="img" aria-label="sad" style={enlargedStyle}>😔</span>
+                    </p> : <p></p>}
 
             </header>
             <div className="button-container text-box">
 
-                    <button onClick={getDataWithFilter} className="btn btn-white btn-animate">Atrast</button>
-                    <button onClick={toggleForm} className="btn btn-white btn-animate">Full filter</button>
+                <button style={{borderRadius: '30px'}} onClick={getDataWithFilter} className="btn btn-white btn-animate">
+                    Atrast
+                </button>
+                <button style={{borderRadius: '30px'}} onClick={addPost} className="btn btn-white btn-animate">
+                    Post a job
+                </button>
 
 
             </div>
 
             <main>
 
-                <section>
-                    <h2>Latest advertisement</h2>
-
-                </section>
 
                 <div className={classes.productList}>
+                    <h3>
+                        <Badge bg="info">Latest advertisement</Badge>
+                    </h3>
                     {posts.length ?
                         posts.map((post) =>
-                            <PostCard key={post.id} id={post.id} post_header={post.post_header} salary={post.salary} post_type={post.post_type} company={post.company}  />
-
+                            <PostCard key={post.id} id={post.id} post_header={post.post_header} salary={post.salary}
+                                      post_type={post.post_type} company={post.company}/>
                         )
                         :
                         <p> List is empty</p>

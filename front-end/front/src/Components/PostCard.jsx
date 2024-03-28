@@ -17,16 +17,11 @@ const PostCard = ({id,post_header, salary,post_type,company}) => {
                     <img src={image}/>
                 </div>
                 <div className={classes.content}>
-                   <h5><Link to={`/show/${id}`}>{post_header}</Link></h5>
+                   <h5 style={{fontWeight:'bold'}}><Link to={`public/show/${id}`}>{post_header}</Link></h5>
                    <hr/>
                     <h5>This post is shared by {company}</h5>
                     <h6>Salary: {salary}$</h6>
-
-
                 </div>
-
-
-
             </div>
             // <Card className="mx-2 my-2" style={{ width: '18rem' }}>
             //     <Card.Body>

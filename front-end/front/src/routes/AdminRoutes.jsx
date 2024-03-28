@@ -4,6 +4,7 @@ import Demo from "../Components/Demo";
 import axios from "axios";
 import Crossroads from "../Admin/Crossroads";
 import AdminMain from "../Admin/AdminMain";
+import Header from "../base/Header";
 
 const AdminRoutes = () => {
 
@@ -34,6 +35,7 @@ const AdminRoutes = () => {
     }, []);
     return (
         <div>
+            <Header/>
             <Routes>
                 <Route path="/demo" element={<Demo/>}/>
                 <Route path="/cross" element={<Crossroads/>}/>

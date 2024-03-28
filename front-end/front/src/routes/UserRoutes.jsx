@@ -8,6 +8,9 @@ import Cookies from 'js-cookie';
 import Registration from "../authorization/Registration";
 import Test from "../Components/Test";
 import AddPostByUser from "../actionWithPost/AddPostByUser";
+import TestMain from "../Components/TestMain";
+import Header from "../base/Header";
+import Apply from "../Components/Apply";
 
 const UserRoutes = () => {
     const now = new Date();
@@ -34,7 +37,7 @@ const UserRoutes = () => {
             })
             .catch((error) => {
                 if (error.response.status === 401||error.response.status===403) {
-                    navigate("/public/login")
+                    navigate("/auf/log")
                 }
 
 
@@ -48,9 +51,10 @@ const UserRoutes = () => {
 
     return (
         <div>
+            <Header/>
             <Routes>
-
                 <Route path="/addPost" element={<AddPostByUser/>}/>
+                <Route path="/apply" element={<Apply/>}/>
                 {/*<Route path="/demo" element={<Demo/>}/>*/}
                 <Route path="/edit/:id" element={<Edit/>}/>
 

@@ -86,7 +86,7 @@ const Login = () => {
                     <button type={"submit"} className="btn btn-white btn-animate">Login</button>
                     <h6>Don't have an account yet? </h6>
                     {/*<a href={}>Register now .</a>*/}
-                    <Link to="/public/register">Register now .</Link>
+                    <Link to="/auf/reg">Register now .</Link>
                 </form>
 
         </div>

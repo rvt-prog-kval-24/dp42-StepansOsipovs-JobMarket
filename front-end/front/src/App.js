@@ -16,6 +16,8 @@ import axios from "axios";
 import GuestRoutes from "./routes/GuestRoutes";
 import UserRoutes from "./routes/UserRoutes";
 import AdminRoutes from "./routes/AdminRoutes";
+import Header from "./base/Header";
+import AufRoutes from "./routes/AufRoutes";
 
 function App() {
 
@@ -60,12 +62,13 @@ const [loading,setLoading]=useState(false);
 
          <Routes >
 
-             <Route path="/" element={<Demo/>} />
+             <Route path="/" element={<GuestRoutes/>} />
              <Route path="/public/*" element={<GuestRoutes />} />
 
              <Route path="/admin/*" element={<AdminRoutes/>} />
 
              <Route path="/private/*" element={<UserRoutes />} />
+             <Route path="/auf/*" element={<AufRoutes/>} />
          </Routes>
 
 

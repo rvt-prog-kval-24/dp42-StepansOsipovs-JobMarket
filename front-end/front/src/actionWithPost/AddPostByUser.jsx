@@ -1,9 +1,17 @@
 import React, {useEffect, useState} from 'react';
 import '../styles/addPost.css';
+import { Editor } from "@tinymce/tinymce-react";
+import 'tinymce/tinymce';
+import 'tinymce/icons/default/icons';
+import 'tinymce/themes/silver/theme';
+import 'tinymce/models/dom/model';
+import 'tinymce/skins/ui/oxide/skin.css';
+import 'tinymce/plugins/lists/plugin';
 import {useNavigate} from "react-router-dom";
 import {useForm} from "react-hook-form";
 import axios from "axios";
 import Cookies from 'js-cookie';
+import TrixFile from "../Trix/TrixFile";
 const AddPostByUser = () => {
     const [testId,setTestId]=useState()
     const [posts,setPost]=useState({owner:{id:Cookies.get('userID')},post_header:'',post_city:'',
@@ -20,6 +28,7 @@ const AddPostByUser = () => {
     const month = String(today.getMonth() + 1).padStart(2, '0');
     const day = String(today.getDate()).padStart(2, '0');
     const todaysDate = year + '-' + month + '-' + day;
+    const [editorValue, setEditorValue] = useState('');
 
 
 
@@ -56,7 +65,7 @@ const AddPostByUser = () => {
 
     const [data, setData] = useState([]);
     const [newTitle, setNewTitle] = useState('');
-    let [newBody, setNewBody] = useState();
+    let [newBody, setNewBody] = useState('');
     const [chunks,setChunks]=useState([]);
 
     const username = 'TestName';
@@ -119,7 +128,7 @@ const AddPostByUser = () => {
     }
 
     function save(){
-
+        handleAddItem();
         const test={posts,data}
         console.log(test);
         axios.post(`http://localhost:8088/post/save`, test,config)
@@ -202,21 +211,21 @@ const AddPostByUser = () => {
 
     return (
         <div>
-            <header>
+            {/*<header>*/}
 
-                <div className={"colored"}>
-                    <h1 className={"main-header"}>IT Market</h1>
-                </div>
+            {/*    /!*<div className={"colored"}>*!/*/}
+            {/*    /!*    <h1 className={"main-header"}>Create Job Post</h1>*!/*/}
+            {/*    /!*</div>*!/*/}
 
-            </header>
-            <div style={{display: 'flex'}}>
-                <section style={{flex: 1}}>
-                    <div className={"section-content"}>
-                        {/* Content for left section goes here */}
-                        <form onSubmit={handleSubmit(validate)}>
+            {/*</header>*/}
+            <div style={{display: 'flex',justifyContent:'center',background:'#dfe5e1'}}>
+
+                    <div  className={"section-content"}>
+
+                        <form className="form-container" style={{marginTop:'5%',background:'white'}} onSubmit={handleSubmit(validate)}>
 
 
-                            <label form='city'>City</label>
+                            <label className="required" form='city'>City</label>
                             <input id='city' type="text"   onChange={e => setPost({...posts, post_city: e.target.value})}/>
                             {errors.length ?
                                 errors.map((error, index) => {
@@ -228,7 +237,7 @@ const AddPostByUser = () => {
                                 }):
                                 <div></div>}
                             <hr/>
-                            <label form='phone'>Phone</label>
+                            <label className="required" form='phone'>Phone</label>
                             <input id='phone' type='text'   onChange={e => setPost({...posts, post_contactPhone: e.target.value})}/>
                             {errors.length ?
                                 errors.map((error, index) => {
@@ -240,7 +249,7 @@ const AddPostByUser = () => {
                                 }):
                                 <div></div>}
                             <hr/>
-                            <label form='email'>Email</label>
+                            <label className="required" form='email'>Email</label>
                             <input id='email' type='text'  onChange={e => setPost({...posts, post_email: e.target.value})} />
                             {errors.length ?
                                 errors.map((error, index) => {
@@ -252,7 +261,7 @@ const AddPostByUser = () => {
                                 }):
                                 <div></div>}
                             <hr/>
-                            <label form='header'>Header</label>
+                            <label className="required" form='header'>Header</label>
                             <input id='header' type='text'  onChange={e => setPost({...posts, post_header: e.target.value})}/>
                             {errors.length ?
                                 errors.map((error, index) => {
@@ -266,7 +275,7 @@ const AddPostByUser = () => {
                             <hr/>
 
 
-                            <label form='post_type'>What type of work </label>
+                            <label className="required" form='post_type'>What type of work </label>
                             <select
                                 defaultValue="Remote" // Установите значение по умолчанию здесь
 
@@ -295,7 +304,7 @@ const AddPostByUser = () => {
                                 }):
                                 <div></div>}
                             <hr/>
-                            <label form='posts_start_day'>Post release day</label>
+                            <label className="required" form='posts_start_day'>Post release day</label>
                             <input id='posts_start_day' type='date'  min={todaysDate}  onChange={ handleStartDateChange}/>
                             {errors.length ?
                                 errors.map((error, index) => {
@@ -307,7 +316,7 @@ const AddPostByUser = () => {
                                 }):
                                 <div></div>}
                             <hr/>
-                            <label form='posts_end_day'>Post die day</label>
+                            <label className="required" form='posts_end_day'>Post die day</label>
                             <input id='posts_end_day' type='date'  min={minEndDate} max={maxDate}  onChange={e => setPost({...posts, posts_end_day: e.target.value})}/>
                             {errors.length ?
                                 errors.map((error, index) => {
@@ -319,7 +328,7 @@ const AddPostByUser = () => {
                                 }):
                                 <div></div>}
                             <hr/>
-                            <label form='salary'>Salary</label>
+                            <label className="required" form='salary'>Salary</label>
                             <input id='salary' type="text"   onChange={e => setPost({...posts, salary: e.target.value})}/>
                             {errors.length ?
                                 errors.map((error, index) => {
@@ -331,12 +340,12 @@ const AddPostByUser = () => {
                                 }):
                                 <div></div>}
                             {selaryError!=='' ?
-                                <p>{selaryError}</p>
+                                <p style={{color:'red'}}>{selaryError}</p>
                                 :
                                 <div></div>}
                             <hr/>
 
-                            <label form='company'>Company</label>
+                            <label className="required" form='company'>Company</label>
                             <input id='company' type="text"   onChange={e => setPost({...posts, company: e.target.value})}/>
                             {errors.length ?
                                 errors.map((error, index) => {
@@ -350,72 +359,38 @@ const AddPostByUser = () => {
                             <hr/>
 
                             {valid===true?
-                                <h3>Validation success</h3>
+                                <h3 style={{color:'green'}}>Validation success</h3>
                                 :
                                 <div></div>}
-                            <button   type="submit" >Apply</button>
+                            <Editor
+                                value={newBody}
+                                onEditorChange={(newValue, editor) => setNewBody(newValue)}
+                                init={{
+                                    height: 500,
+                                    menubar: false,
+                                    branding: false,
+                                    plugins: 'lists',
+                                    toolbar: [
+                                        { name: 'history', items: ['undo', 'redo','bold', 'italic', 'underline'] },
+                                        { name: 'alignment', items: ['alignleft', 'aligncenter', 'alignright', 'alignjustify','outdent', 'indent'] },
+                                        { name: 'lists', items: ['bullist', 'numlist'] },
+                                    ],
+
+                                }}
+                            />
+                            <div style={{display: 'flex', justifyContent: 'center'}}>
+                                <button type="submit">Accept</button>
+                            </div>
+                            {valid===true?
+                                <div style={{display: 'flex', justifyContent: 'center'}}>
+                                    <button onClick={save} >Preview</button>
+                                </div> :
+                                <div></div>}
                         </form>
 
                     </div>
-                </section>
-
-                <section style={{flex: 2}}>
-                    <div className={"main-content"}>
-                        {/* Content for center section goes here */}
-                        {valid!==true ?
-                            <button disabled={true} onClick={save} >Save</button>
-                            :
-                            <button onClick={save} >Save</button>
-                        }
-                        <h2 className={"header-example"}>{posts.post_header}</h2>
-                        {posts.salary!==''?<h5 className={"salary-example"}>Declared salary {posts.salary}$</h5>:<h4></h4>}
-                        {posts.post_type!==''?<h5 className={"salary-example"}>Work type {posts.post_type}</h5>:<h4></h4>}
-                        {posts.posts_end_day!==''?<h5 className={"salary-example"}>Ad active until {posts.posts_end_day}</h5>:<h4></h4>}
-                        {posts.company!==''?<h5 className={"salary-example"}>Ad published by {posts.company}</h5>:<h5></h5> }
 
 
-
-                        <ul style={{paddingTop:"5%"}}>
-                            {data.map((item, index) => {
-                                return (
-                                    <li style={{textAlign:"left"}} key={index}>
-                                        <h3>{item.title}</h3>
-                                        <h4>{item.body}</h4>
-                                        {/*{item.body.map((chunk, index) => (*/}
-                                        {/*    <h6 key={index}>{chunk}</h6>*/}
-                                        {/*))}*/}
-                                    </li>
-
-                                );
-                            })}
-                        </ul>
-                        <hr/>
-                        <h2>Contact information </h2>
-                        {posts.post_email!==''?<h5 className={"salary-example"}>Email {posts.post_email}</h5>:<h5></h5> }
-                        {posts.post_contactPhone!==''?<h5 className={"salary-example"}>Phone {posts.post_contactPhone}</h5>:<h5></h5> }
-
-
-                    </div>
-                </section>
-
-                <section style={{flex: 1}}>
-                    <div className={"section-content"}>
-                        {/* Content for right section goes here */}
-                        <label >Topic</label>
-                        <input  type="text"
-                                placeholder="Key"
-                                value={newTitle}
-                                onChange={(e) => setNewTitle(e.target.value)}/>
-                        <hr/>
-                        <label>Body</label>
-                        <textarea rows="20" cols="45" name="text" type="text"
-                                  placeholder="Value"
-                                  value={newBody}
-                                  onChange={(e) => setNewBody(e.target.value)}/>
-                        <button onClick={handleAddItem}>Добавить</button>
-
-                    </div>
-                </section>
             </div>
 
         </div>

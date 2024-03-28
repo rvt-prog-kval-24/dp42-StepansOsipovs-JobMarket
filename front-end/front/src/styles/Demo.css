@@ -95,7 +95,7 @@
 /* настройки блока с текстом */
 .colored {
     /* фон */
-    background: #8ae3da;
+    background: #b5f9ee;
     /* межстрочное расстояние */
     line-height: 1;
     /* подключаем сетку */
@@ -172,7 +172,7 @@ body {
 }
 
 header {
-    background-color: #8ae3da;
+    background-color: #b5f9ee;
     color: black;
     padding: 10px 0;
     text-align: center;
@@ -314,7 +314,7 @@ select {
 
 .btn-white {
     margin-right: 1vh;
-    background-color: #8ae3da;
+    background-color: #b5f9ee;
     color: black;
 }
 
