@@ -99,6 +99,7 @@ public ResponseEntity<Resource> downloadDocument(@PathVariable("id") Integer id)
                 .contentLength(document.getContent().length)
                 .body(resource);
 
+
     } else {
         return ResponseEntity.notFound().build();
 
