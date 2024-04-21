@@ -22,7 +22,7 @@ public interface PostsRepository extends JpaRepository<Post,Integer>, JpaSpecifi
 
     List<Post>findByOwner(Person owner);
 
-
+    List<Post> findAllByOwner_Id(int ownerId);
     @Query("SELECT DISTINCT p.post_city FROM Post p")
     List<String> selectDistinctCity();
     @Query("SELECT DISTINCT p.company FROM Post p")

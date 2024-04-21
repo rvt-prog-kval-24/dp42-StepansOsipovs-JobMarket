@@ -22,14 +22,11 @@ const Show = () => {
     const [open, setOpen] = React.useState(false);
 
     function deleteProducts() {
-
         axios.post(`http://localhost:8088/post/del/${id}`)
             .then(response => {
                 if(response.status===200){
                     navigate("/")
                 }
-
-
     });
 }
 
@@ -95,8 +92,7 @@ function getPost(){
         <Button as={Link} to="/" variant="secondary">
             BACK
         </Button>
-        <div >
-
+        <div>
             <div style={{display: 'flex', gap: '20px', justifyContent: 'center', paddingTop: '100px'}}>
                 <div style={{ boxShadow:'0px 10px 10px 5px rgba(0, 0, 0, 0.5)', borderRadius:'20px',width: '45%',padding:'10px',background:'white'}}>
                     {postInfo.postAtributes && postInfo.postAtributes.length > 0 && (
@@ -112,7 +108,6 @@ function getPost(){
                     alignItems: 'start',
                     gap: '10px',
                     padding: '10px',
-
                     background:'white',
                     boxShadow:'0px 10px 10px 5px rgba(0, 0, 0, 0.5)'
                 }}>

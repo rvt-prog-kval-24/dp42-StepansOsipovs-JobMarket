@@ -27,10 +27,5 @@ public class PostValidator implements Validator {
             if (post.getOwner().getId()==0){
                 errors.rejectValue("owner","","Chose the owner please :)");
             }
-
-
-
-
-
     }
 }

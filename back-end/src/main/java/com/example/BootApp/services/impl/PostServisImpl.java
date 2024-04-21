@@ -15,10 +15,13 @@ import com.example.BootApp.specifications.PostSpecifications;
 import com.example.BootApp.util.PostMapperImpl;
 import com.example.BootApp.util.PostNotDeleted;
 import com.example.BootApp.util.PostNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.example.BootApp.DTO.UpdatePostDTO.EditAttributeDTO;
 
 import java.util.List;
 
@@ -95,6 +98,9 @@ public class PostServisImpl implements PostService {
     }
 
 
+    public List<Post> getByOwner(int id){
+        return postsRepository.findAllByOwner_Id(id);
+    }
     public List<PostHeaderDTO> headers() {
         return postsRepository.selectHeaders();
     }
@@ -107,11 +113,77 @@ public class PostServisImpl implements PostService {
 
 
     }
-    @Transactional
-    public void update(int id, Post post) {
-        post.setId(id);
-        postsRepository.save(post);
+//    @Transactional
+//    public void update(int id, UpdatePostDTO postDTO) {
+//        System.out.println("Attempting to update post with ID: " + id);
+//        System.out.println("Received city from DTO: " + postDTO.getPost_city());
+//        UpdatePostDTO.EditAttributeDTO attribute = new UpdatePostDTO.EditAttributeDTO();
+//
+//        Post postToUpdate = postsRepository.findById(id).orElse(null);
+//
+//        if (postToUpdate != null) {
+//            System.out.println("Post found, updating details.");
+//            // Обновление полей объекта postToUpdate с использованием данных из postDTO
+//            postToUpdate.setPost_header(postDTO.getPost_header());
+//            postToUpdate.setPost_city(postDTO.getPost_city());
+//            postToUpdate.setPost_type(postDTO.getPost_type());
+//            postToUpdate.setPosts_start_day(postDTO.getPosts_start_day());
+//            postToUpdate.setPosts_end_day(postDTO.getPosts_end_day());
+//            postToUpdate.setPost_contactPhone(postDTO.getPost_contactPhone());
+//            postToUpdate.setPost_email(postDTO.getPost_email());
+//            postToUpdate.setSalary(postDTO.getSalary());
+//            postToUpdate.setCompany(postDTO.getCompany());
+//            // Дополнительно можно обновить связанные атрибуты или другие поля, если это необходимо
+//
+//            // Сохранение обновлённого объекта в базу данных
+//            postsRepository.save(postToUpdate);
+//
+//            System.out.println(postDTO.getPostAtributes().toString());
+//        } else {
+//            System.out.println("Post not found with id: " + id);
+//        }
+//    }
+@Transactional
+public void update(int id, UpdatePostDTO postDTO) {
+    System.out.println("Attempting to update post with ID: " + id);
+    System.out.println("Received city from DTO: " + postDTO.getPost_city());
+
+    Post postToUpdate = postsRepository.findById(id).orElse(null);
+
+    if (postToUpdate != null) {
+        System.out.println("Post found, updating details.");
+        // Обновление основных полей
+        postToUpdate.setPost_header(postDTO.getPost_header());
+        postToUpdate.setPost_city(postDTO.getPost_city());
+        postToUpdate.setPost_type(postDTO.getPost_type());
+        postToUpdate.setPosts_start_day(postDTO.getPosts_start_day());
+        postToUpdate.setPosts_end_day(postDTO.getPosts_end_day());
+        postToUpdate.setPost_contactPhone(postDTO.getPost_contactPhone());
+        postToUpdate.setPost_email(postDTO.getPost_email());
+        postToUpdate.setSalary(postDTO.getSalary());
+        postToUpdate.setCompany(postDTO.getCompany());
+
+        // Обновление связанных атрибутов
+        if (postDTO.getPostAtributes() != null) {
+            postToUpdate.getPostAtributes().clear();  // Очистка существующих атрибутов
+            for (UpdatePostDTO.EditAttributeDTO attrDTO : postDTO.getPostAtributes()) {
+                Post_atribute attribute = new Post_atribute();
+                attribute.setId(attrDTO.getId());
+                attribute.setTitle(attrDTO.getTitle());
+                attribute.setBody(attrDTO.getBody());
+                attribute.setPost(postToUpdate);  // Установка обратной связи с родительским постом
+                // Добавление атрибута к посту
+                atributeRepo.save(attribute);
+            }
+
+        }
+
+        // Сохранение обновлённого объекта в базу данных
+        postsRepository.save(postToUpdate);
+    } else {
+        System.out.println("Post not found with id: " + id);
     }
+}
 
 
 }

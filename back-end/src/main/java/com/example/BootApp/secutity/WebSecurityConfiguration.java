@@ -56,10 +56,13 @@ public class WebSecurityConfiguration   {
                         auth
                                 .requestMatchers(HttpMethod.POST, "/api/accounts/*").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/accounts/*").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/document/**").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/document/**").permitAll()
                                 //.requestMatchers(HttpMethod.GET,"/post/getHeaders").permitAll()
                                 .requestMatchers(HttpMethod.GET,"/post/**").permitAll()
                                 .requestMatchers(HttpMethod.POST,"/post/**").permitAll()
                                 .requestMatchers(HttpMethod.GET,"/people/**").permitAll()
+
                                 //.requestMatchers(HttpMethod.POST,"/login").permitAll()
 
                                // .requestMatchers("/**").authenticated()

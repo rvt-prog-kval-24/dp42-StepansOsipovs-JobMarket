@@ -11,6 +11,9 @@ import AddPostByUser from "../actionWithPost/AddPostByUser";
 import TestMain from "../Components/TestMain";
 import Header from "../base/Header";
 import Apply from "../Components/Apply";
+import Account from "../profile/Account";
+import UserPosts from "../profile/UserPosts";
+import EditUserPost from "../profile/EditUserPost";
 
 const UserRoutes = () => {
     const now = new Date();
@@ -31,16 +34,11 @@ const UserRoutes = () => {
                 Cookies.set('userID',response.data.id, { expires: expiresAt, path: '/' });
                 Cookies.set('userName', response.data.username, { expires: expiresAt, path: '/' });
                 console.log(Cookies.get('userName'));
-                // console.log('Success', response.data);
-              //  localStorage.setItem("jwt",response.data)
-
             })
             .catch((error) => {
                 if (error.response.status === 401||error.response.status===403) {
                     navigate("/auf/log")
                 }
-
-
             });
     }
 
@@ -57,7 +55,9 @@ const UserRoutes = () => {
                 <Route path="/apply" element={<Apply/>}/>
                 {/*<Route path="/demo" element={<Demo/>}/>*/}
                 <Route path="/edit/:id" element={<Edit/>}/>
-
+                <Route path="/account/:id" element={<Account/>}/>
+                <Route path="/account/:id/posts" element={<UserPosts/>}/>
+                <Route path="/account/:id/posts/edit/:postId" element={<EditUserPost/>}/>
             </Routes>
         </div>
     );

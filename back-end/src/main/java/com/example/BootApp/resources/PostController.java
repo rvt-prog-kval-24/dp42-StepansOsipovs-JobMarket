@@ -79,17 +79,7 @@ public static String UPLOAD_DIRECTORY = System.getProperty("test/projekti/BootAp
     }
     @PostMapping("/edit")
     @ResponseBody
-    public ResponseEntity<?> updatePost(@RequestBody @Valid Post post ,BindingResult result) {
-        if (result.hasErrors()) {
-
-            List<ValidationErrorDTO> errors = result.getFieldErrors().stream()
-                    .map(error -> new ValidationErrorDTO(error.getField(), error.getDefaultMessage()))
-                    .collect(Collectors.toList());
-
-            return ResponseEntity.badRequest().body(errors);
-        }
-
-
+    public ResponseEntity<?> updatePost(@RequestBody  UpdatePostDTO post ) {
         postServisImpl.update(post.getId(),post);
         return ResponseEntity.ok(HttpStatus.OK);
     }
@@ -113,8 +103,11 @@ public static String UPLOAD_DIRECTORY = System.getProperty("test/projekti/BootAp
         return ResponseEntity.ok(postServisImpl.headers());
     }
 
-   
-
+    @GetMapping("/getPostsByOwner/{id}")
+    @ResponseBody
+    public ResponseEntity<List<Post>> getById(@PathVariable("id") int id){
+        return ResponseEntity.ok(postServisImpl.getByOwner(id));
+    }
 
 
     @GetMapping("/all")

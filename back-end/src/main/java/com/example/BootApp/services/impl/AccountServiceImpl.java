@@ -1,6 +1,7 @@
 package com.example.BootApp.services.impl;
 
 import com.example.BootApp.DTO.SetOwnerDTO;
+import com.example.BootApp.DTO.UpdateAccountDTO;
 import com.example.BootApp.models.Account;
 import com.example.BootApp.models.Person;
 import com.example.BootApp.models.Role;
@@ -42,6 +43,20 @@ public class AccountServiceImpl implements AccountService {
         roles.add(role);
         account.setRoles(roles);
         return accountRepository.save(account);
+    }
+
+    public Optional<Account>findOne(int id){
+        return accountRepository.findById(id);
+    }
+
+    public void update(int id, UpdateAccountDTO account){
+      Account updatedAccount=accountRepository.findById(account.getId()).orElse(null);
+        assert updatedAccount != null;
+        updatedAccount.setUsername(account.getUsername());
+        accountRepository.save(updatedAccount);
+//      Optional<Account> password= accountRepository.findById(id);
+//      account.setPassword(password.get().getPassword());
+//        accountRepository.save(account);
     }
 
     @Override

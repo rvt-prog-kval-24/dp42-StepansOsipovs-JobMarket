@@ -8,7 +8,7 @@ import Cookies from "js-cookie";
 const Header = () => {
     const [isAuth ,setIsAuth]=useState(false);
     const navigate = useNavigate();
-
+    const id=Cookies.get('userID')
     function checkAuth(){
         if (localStorage.getItem("jwt")){
             setIsAuth(true);
@@ -27,6 +27,9 @@ const Header = () => {
         Cookies.remove("userName");
         window.location.reload();
 
+    }
+    function account(){
+        navigate(`/private/account/${id}`)
     }
     const handleReset = () => {
         window.location.reload();
@@ -58,7 +61,7 @@ const Header = () => {
                         {isAuth && (
                             <>
                                 <Nav.Link  onClick={logout} >Logout</Nav.Link >
-                                <Nav.Link  onClick={handleReset} >Your profile</Nav.Link >
+                                <Nav.Link  onClick={account} >Your profile</Nav.Link >
                             </>
                         )}
                         {!isAuth && (

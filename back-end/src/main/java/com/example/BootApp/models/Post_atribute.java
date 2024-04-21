@@ -31,7 +31,7 @@ public class Post_atribute {
     private String body;
 
     @JsonIgnore
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "mainpost",referencedColumnName = "id",nullable = false)
     private Post post;
 

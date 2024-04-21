@@ -63,18 +63,9 @@ const AddPostByUser = () => {
 
 
 
-    const [data, setData] = useState([]);
-    const [newTitle, setNewTitle] = useState('');
-    let [newBody, setNewBody] = useState('');
-    const [chunks,setChunks]=useState([]);
-
-    const username = 'TestName';
-    const password = 'TestPassword';
-    const config = {
-        headers: {
-            Authorization: `Basic ${btoa(`${username}:${password}`)}`,
-        },
-    };
+    let [data, setData] = useState([]);
+    const [newTitle, setNewTitle] = useState('Q');
+    const [newBody, setNewBody] = useState(' ');
     const handleAddItem = () => {
 
         // newBody=newBody.match(/.{1,20}/g) || [];
@@ -83,8 +74,7 @@ const AddPostByUser = () => {
 
 
         setData([...data, newItem]);
-        setNewTitle('');
-        setNewBody('');
+
 
     }
 
@@ -97,41 +87,30 @@ const AddPostByUser = () => {
     useEffect(()=> {
 
         getWorkType();
-
+        setPost({owner:{id:Cookies.get('userID')},post_header:'',post_city:'',
+            post_type:'Remote',posts_start_day:'',posts_end_day:'',post_contactPhone:'',post_email:'',salary:'',company:''});
     },[]);
 
-    function findUser(user){
 
-        axios.get('http://localhost:8088/api/accounts/getUsersByName?name='+user)
-            .then(response => {
-                setPeople(response.data);
-
-            });
-    }
     function getWorkType(){
-        axios.get('http://localhost:8088/post/getWorkType',config)
+        axios.get('http://localhost:8088/post/getWorkType')
             .then(response => {
                 setworkTypes(response.data);
 
             });
     }
 
-    function add(){
-        axios.post(`http://localhost:8088/post/save`, posts)
-            .then((response) => {
-
-
-                console.log('Success', response.data);
-                navigate("/");
-
-            })
-    }
-
+    // const [newItem, setNewItem] = useState({title:'',body:''});
     function save(){
-        handleAddItem();
+        // handleAddItem();
+        console.log(newBody)
+        // const newItem = { title: newTitle, body: newBody };
+        // setNewItem({title: newTitle,body: newBody});
+        // setData([...data,{title:newTitle,body: newBody}]);
+        data=[{title:newTitle,body: newBody}];
         const test={posts,data}
         console.log(test);
-        axios.post(`http://localhost:8088/post/save`, test,config)
+        axios.post(`http://localhost:8088/post/save`, test)
             .then((response) => {
 
 
@@ -222,11 +201,13 @@ const AddPostByUser = () => {
 
                     <div  className={"section-content"}>
 
-                        <form className="form-container" style={{marginTop:'5%',background:'white'}} onSubmit={handleSubmit(validate)}>
+                        <div className="form-container" style={{marginTop: '5%', background: 'white'}}
+                            >
 
 
                             <label className="required" form='city'>City</label>
-                            <input id='city' type="text"   onChange={e => setPost({...posts, post_city: e.target.value})}/>
+                            <input id='city' type="text"
+                                   onChange={e => setPost({...posts, post_city: e.target.value})}/>
                             {errors.length ?
                                 errors.map((error, index) => {
                                     if (error.field === 'post_city') {
@@ -234,11 +215,12 @@ const AddPostByUser = () => {
                                     }
 
 
-                                }):
+                                }) :
                                 <div></div>}
                             <hr/>
                             <label className="required" form='phone'>Phone</label>
-                            <input id='phone' type='text'   onChange={e => setPost({...posts, post_contactPhone: e.target.value})}/>
+                            <input id='phone' type='text'
+                                   onChange={e => setPost({...posts, post_contactPhone: e.target.value})}/>
                             {errors.length ?
                                 errors.map((error, index) => {
                                     if (error.field === 'post_contactPhone') {
@@ -246,11 +228,12 @@ const AddPostByUser = () => {
                                     }
 
 
-                                }):
+                                }) :
                                 <div></div>}
                             <hr/>
                             <label className="required" form='email'>Email</label>
-                            <input id='email' type='text'  onChange={e => setPost({...posts, post_email: e.target.value})} />
+                            <input id='email' type='text'
+                                   onChange={e => setPost({...posts, post_email: e.target.value})}/>
                             {errors.length ?
                                 errors.map((error, index) => {
                                     if (error.field === 'post_email') {
@@ -258,11 +241,12 @@ const AddPostByUser = () => {
                                     }
 
 
-                                }):
+                                }) :
                                 <div></div>}
                             <hr/>
                             <label className="required" form='header'>Header</label>
-                            <input id='header' type='text'  onChange={e => setPost({...posts, post_header: e.target.value})}/>
+                            <input id='header' type='text'
+                                   onChange={e => setPost({...posts, post_header: e.target.value})}/>
                             {errors.length ?
                                 errors.map((error, index) => {
                                     if (error.field === 'post_header') {
@@ -270,7 +254,7 @@ const AddPostByUser = () => {
                                     }
 
 
-                                }):
+                                }) :
                                 <div></div>}
                             <hr/>
 
@@ -301,11 +285,11 @@ const AddPostByUser = () => {
                                     }
 
 
-                                }):
+                                }) :
                                 <div></div>}
                             <hr/>
                             <label className="required" form='posts_start_day'>Post release day</label>
-                            <input id='posts_start_day' type='date'  min={todaysDate}  onChange={ handleStartDateChange}/>
+                            <input id='posts_start_day' type='date' min={todaysDate} onChange={handleStartDateChange}/>
                             {errors.length ?
                                 errors.map((error, index) => {
                                     if (error.field === 'posts_start_day') {
@@ -313,11 +297,12 @@ const AddPostByUser = () => {
                                     }
 
 
-                                }):
+                                }) :
                                 <div></div>}
                             <hr/>
                             <label className="required" form='posts_end_day'>Post die day</label>
-                            <input id='posts_end_day' type='date'  min={minEndDate} max={maxDate}  onChange={e => setPost({...posts, posts_end_day: e.target.value})}/>
+                            <input id='posts_end_day' type='date' min={minEndDate} max={maxDate}
+                                   onChange={e => setPost({...posts, posts_end_day: e.target.value})}/>
                             {errors.length ?
                                 errors.map((error, index) => {
                                     if (error.field === 'posts_end_day') {
@@ -325,11 +310,11 @@ const AddPostByUser = () => {
                                     }
 
 
-                                }):
+                                }) :
                                 <div></div>}
                             <hr/>
                             <label className="required" form='salary'>Salary</label>
-                            <input id='salary' type="text"   onChange={e => setPost({...posts, salary: e.target.value})}/>
+                            <input id='salary' type="text" onChange={e => setPost({...posts, salary: e.target.value})}/>
                             {errors.length ?
                                 errors.map((error, index) => {
                                     if (error.field === 'salary') {
@@ -337,16 +322,17 @@ const AddPostByUser = () => {
                                     }
 
 
-                                }):
+                                }) :
                                 <div></div>}
-                            {selaryError!=='' ?
-                                <p style={{color:'red'}}>{selaryError}</p>
+                            {selaryError !== '' ?
+                                <p style={{color: 'red'}}>{selaryError}</p>
                                 :
                                 <div></div>}
                             <hr/>
 
                             <label className="required" form='company'>Company</label>
-                            <input id='company' type="text"   onChange={e => setPost({...posts, company: e.target.value})}/>
+                            <input id='company' type="text"
+                                   onChange={e => setPost({...posts, company: e.target.value})}/>
                             {errors.length ?
                                 errors.map((error, index) => {
                                     if (error.field === 'company') {
@@ -354,12 +340,12 @@ const AddPostByUser = () => {
                                     }
 
 
-                                }):
+                                }) :
                                 <div></div>}
                             <hr/>
 
-                            {valid===true?
-                                <h3 style={{color:'green'}}>Validation success</h3>
+                            {valid === true ?
+                                <h3 style={{color: 'green'}}>Validation success</h3>
                                 :
                                 <div></div>}
                             <Editor
@@ -378,15 +364,16 @@ const AddPostByUser = () => {
 
                                 }}
                             />
-                            <div style={{display: 'flex', justifyContent: 'center'}}>
-                                <button type="submit">Accept</button>
-                            </div>
-                            {valid===true?
+
+                            {valid === true ?
                                 <div style={{display: 'flex', justifyContent: 'center'}}>
-                                    <button onClick={save} >Preview</button>
+                                    <button onClick={save}>Preview</button>
                                 </div> :
                                 <div></div>}
-                        </form>
+                            <div style={{display: 'flex', justifyContent: 'center'}}>
+                                <button onClick={validate} >Accept</button>
+                            </div>
+                        </div>
 
                     </div>
 

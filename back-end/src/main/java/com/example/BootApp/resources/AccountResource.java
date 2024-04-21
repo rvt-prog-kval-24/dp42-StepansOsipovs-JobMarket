@@ -3,8 +3,11 @@ package com.example.BootApp.resources;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.example.BootApp.DTO.AuthenticationDTO;
 import com.example.BootApp.DTO.SetOwnerDTO;
+import com.example.BootApp.DTO.UpdateAccountDTO;
 import com.example.BootApp.DTO.ValidationErrorDTO;
 import com.example.BootApp.models.Account;
+import com.example.BootApp.models.Person;
+import com.example.BootApp.models.Post;
 import com.example.BootApp.secutity.AccountAuthenticationProvider;
 import com.example.BootApp.secutity.JWTFilter;
 import com.example.BootApp.secutity.JWTUtil;
@@ -27,13 +30,16 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.security.auth.login.AccountNotFoundException;
 import java.net.URI;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -54,7 +60,29 @@ public class AccountResource {
         return accountService.getByName(name);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Optional<Account>> show(@PathVariable("id") int id) {
+        return ResponseEntity.ok(accountService.findOne(id));
+    }
 
+
+    @PostMapping("/edit")
+    @ResponseBody
+    public ResponseEntity<?> updatePost(@RequestBody @Valid UpdateAccountDTO account , BindingResult result) {
+        System.out.println("aaa");
+        if (result.hasErrors()) {
+
+            List<ValidationErrorDTO> errors = result.getFieldErrors().stream()
+                    .map(error -> new ValidationErrorDTO(error.getField(), error.getDefaultMessage()))
+                    .collect(Collectors.toList());
+
+            return ResponseEntity.badRequest().body(errors);
+        }
+
+
+        accountService.update(account.getId(),account);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
 
 
     @PostMapping("/reg")

@@ -4,6 +4,7 @@ import axios from "axios";
 import '../styles/login.css';
 import {Link, useNavigate} from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import Cookies from "js-cookie";
 
 
 const Login = () => {
@@ -28,15 +29,12 @@ const Login = () => {
                 localStorage.removeItem("jwt");
                 localStorage.setItem("jwt",response.data['jwt-token'])
                 const decodedToken = jwtDecode(localStorage.getItem("jwt"));
-
                 console.log(decodedToken.role);
                 if (decodedToken.role.includes("ROLE_ADMIN")){
                    navigate("/admin/cross");
                 }else {
                     navigate("/");
                 }
-
-
             })
             .catch((error) => {
                 if (error.response.status === 401) {
@@ -54,16 +52,12 @@ const Login = () => {
         mode:"onBlur",
 
     });
-
-
-
     const config = {
         headers: {
             Authorization: `Bearer ${localStorage.getItem("jwt")}`,
             'Content-Type': 'application/json',
         },
     };
-
         return (
          <div>
                 <header>

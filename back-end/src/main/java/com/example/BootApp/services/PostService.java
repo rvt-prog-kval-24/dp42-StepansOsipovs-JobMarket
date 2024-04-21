@@ -1,9 +1,6 @@
 package com.example.BootApp.services;
 
-import com.example.BootApp.DTO.AddPostDTO;
-import com.example.BootApp.DTO.DataForSwitchDTO;
-import com.example.BootApp.DTO.GetPostDTO;
-import com.example.BootApp.DTO.PostHeaderDTO;
+import com.example.BootApp.DTO.*;
 import com.example.BootApp.models.Post;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -23,5 +20,5 @@ public interface PostService {
 
     public void delete(int id);
 
-    public void update(int id, Post post);
+    public void update(int id, UpdatePostDTO post);
 }

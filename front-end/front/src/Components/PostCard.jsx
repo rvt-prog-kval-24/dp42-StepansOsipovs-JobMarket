@@ -6,7 +6,7 @@ import {ListGroup} from "react-bootstrap";
 import image from "../images/icon-image-not-found-free-vector.jpg"
 
 
-const PostCard = ({id,post_header, salary,post_type,company}) => {
+const PostCard = ({id,post_header, salary,post_type,company,owner}) => {
     if (id != null) {
 
 
@@ -17,8 +17,13 @@ const PostCard = ({id,post_header, salary,post_type,company}) => {
                     <img src={image}/>
                 </div>
                 <div className={classes.content}>
-                   <h5 style={{fontWeight:'bold'}}><Link to={`public/show/${id}`}>{post_header}</Link></h5>
-                   <hr/>
+                    {owner ?
+                        <h5 style={{fontWeight: 'bold'}}><Link to={`edit/${id}`}>{post_header}  Privat</Link></h5>
+                        :
+                        <h5 style={{fontWeight: 'bold'}}><Link to={`public/show/${id}`}>{post_header}</Link></h5>
+                    }
+
+                    <hr/>
                     <h5>This post is shared by {company}</h5>
                     <h6>Salary: {salary}$</h6>
                 </div>

@@ -22,7 +22,6 @@ import AufRoutes from "./routes/AufRoutes";
 function App() {
 
 
-const [loading,setLoading]=useState(false);
 //const navigate = useNavigate();
 
 // function findJwt(){
