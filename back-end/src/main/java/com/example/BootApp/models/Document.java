@@ -20,4 +20,18 @@ public class Document {
 
     @Lob
     private byte[] content;
+
+    private int sendTo;
+
+    private int sendFrom;
+
+    private int toPost;
+
+    private String byEmail;
+
+    private String byName;
+
+    private String byPhone;
+
+    private String status;
 }

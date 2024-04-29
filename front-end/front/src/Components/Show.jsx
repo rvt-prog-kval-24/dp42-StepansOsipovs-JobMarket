@@ -40,7 +40,7 @@ function getPost(){
     function applyPost(){
         if (localStorage.getItem("jwt"))
         {
-            navigate("/private/apply");
+            navigate(`/private/apply/${postInfo.owner.id}/${id}`);
         }
         else handleOpen();
     }

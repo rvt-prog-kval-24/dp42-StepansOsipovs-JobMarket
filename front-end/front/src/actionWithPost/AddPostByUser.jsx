@@ -12,6 +12,7 @@ import {useForm} from "react-hook-form";
 import axios from "axios";
 import Cookies from 'js-cookie';
 import TrixFile from "../Trix/TrixFile";
+import Form from "react-bootstrap/Form";
 const AddPostByUser = () => {
     const [testId,setTestId]=useState()
     const [posts,setPost]=useState({owner:{id:Cookies.get('userID')},post_header:'',post_city:'',
@@ -364,7 +365,13 @@ const AddPostByUser = () => {
 
                                 }}
                             />
-
+                            <Form.Group className="mb-3" controlId="formBasicFile">
+                                <Form.Label>Sludinājuma attels  </Form.Label>
+                                <Form.Control type="file" onChange={handleFileChange} />
+                                <Form.Text className="text-muted">
+                                    Tikai PDF.
+                                </Form.Text>
+                            </Form.Group>
                             {valid === true ?
                                 <div style={{display: 'flex', justifyContent: 'center'}}>
                                     <button onClick={save}>Preview</button>

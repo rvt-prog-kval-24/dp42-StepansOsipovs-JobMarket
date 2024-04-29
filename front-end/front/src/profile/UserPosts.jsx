@@ -31,7 +31,9 @@ const UserPosts = () => {
                 setUserDate(response.data);
             });
     }
-
+    function userAtsauksmes(){
+        navigate(`/private/account/${id}/atsauksmes`);
+    }
 
     function selectProducts(){
         axios.get(`http://localhost:8088/post/getPostsByOwner/${id}` )
@@ -140,16 +142,13 @@ const UserPosts = () => {
                                 <Badge bg="success">Aktīvs</Badge> : <Badge bg="danger">Neaktīvs</Badge>}</a>
                             <p style={{verticalAlign: 'middle', margin: 0}}></p>
                         </div>
-                        <div style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
-                            <a style={{fontWeight: 'bold'}}>Aktīvas atsauksmes :</a>
-                            <p style={{verticalAlign: 'middle', margin: 0}}></p>
-                        </div>
+
                         <div style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
                             <Button onClick={userPosts} variant="link">Apskatīt sludinājumus </Button>
                             <p style={{verticalAlign: 'middle', margin: 0}}></p>
                         </div>
                         <div style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
-                            <Button variant="link">Apskatīt atsauksmes </Button>
+                            <Button onClick={userAtsauksmes} variant="link">Apskatīt atsauksmes </Button>
                             <p style={{verticalAlign: 'middle', margin: 0}}></p>
                         </div>
                     </div>

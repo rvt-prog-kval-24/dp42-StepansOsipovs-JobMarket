@@ -75,6 +75,9 @@ public class Post {
     @JoinColumn(name = "person_id",referencedColumnName = "id",nullable = false)
     private Account owner;
 
+    @Lob
+    @Column(nullable = true)
+    private byte[] data;
     public Post(String post_header, String post_city,
                 String post_type, Date posts_start_day, Date posts_end_day,
                String post_email,String post_contactPhone,Integer salary,String company,Account owner) {

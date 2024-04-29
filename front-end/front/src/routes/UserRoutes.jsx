@@ -14,10 +14,11 @@ import Apply from "../Components/Apply";
 import Account from "../profile/Account";
 import UserPosts from "../profile/UserPosts";
 import EditUserPost from "../profile/EditUserPost";
+import Atsauksmes from "../profile/Atsauksmes";
 
 const UserRoutes = () => {
     const now = new Date();
-    const expiresAt = new Date(now.getTime() + 100 * 60 * 1000);
+    const expiresAt = new Date(now.getTime() + 60 * 60 * 1000);  // Добавляет 1 час к текущему времени
     const navigate = useNavigate();
     const config = {
         headers: {
@@ -52,11 +53,12 @@ const UserRoutes = () => {
             <Header/>
             <Routes>
                 <Route path="/addPost" element={<AddPostByUser/>}/>
-                <Route path="/apply" element={<Apply/>}/>
+                <Route path="/apply/:owner/:postId" element={<Apply/>}/>
                 {/*<Route path="/demo" element={<Demo/>}/>*/}
                 <Route path="/edit/:id" element={<Edit/>}/>
                 <Route path="/account/:id" element={<Account/>}/>
                 <Route path="/account/:id/posts" element={<UserPosts/>}/>
+                <Route path="/account/:id/atsauksmes" element={<Atsauksmes/>}/>
                 <Route path="/account/:id/posts/edit/:postId" element={<EditUserPost/>}/>
             </Routes>
         </div>

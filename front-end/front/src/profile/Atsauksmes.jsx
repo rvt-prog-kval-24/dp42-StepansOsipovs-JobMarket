@@ -1,34 +1,23 @@
 import React, {useEffect, useState} from 'react';
 import {Link, useNavigate, useParams} from "react-router-dom";
 import axios from "axios";
-import Button from "react-bootstrap/Button";
-import place from "../icon/marker.png"
-import start from "../icon/calendar-clock.png"
-import end from "../icon/eye-crossed.png"
-import phone from "../icon/phone-call.png"
-import email from "../icon/envelope-plus.png"
-import company from "../icon/building.png"
-import type from "../icon/corporate-alt.png"
-import salary from "../icon/payroll-calendar.png"
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import Button from "react-bootstrap/Button";
 import PostCard from "../Components/PostCard";
-import Form from 'react-bootstrap/Form';
 import Badge from "react-bootstrap/Badge";
-import Alert from "react-bootstrap/Alert";
 
-const Account = () => {
+const Atsauksmes = () => {
     const {id}=useParams();
     const [postInfo, setPostInfo] = useState([]);
     const navigate = useNavigate();
     const [open, setOpen] = React.useState(false);
     const [userData,setUserDate]=useState({});
-    let [posts, setPosts] = useState([]);
-    const [show, setShow] = useState(false);
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [error,setError]=useState('');
-    const [activeAttachment,setActiveAtt]=useState('');
+    let [atsauksmes, setAtsauksmes] = useState([]);
+
+    let [posts,setPosts]=useState([])
+
     function getUser() {
         axios.get(`http://localhost:8088/api/accounts/${id}`)
             .then(response => {
@@ -49,43 +38,29 @@ const Account = () => {
     const handleClose = () => setOpen(false);
     useEffect(()=> {
         getUser();
-        selectProducts()
-        getFeedback()
+        selectProducts();
+        getAtsauksmes();
     },[]);
 
+    function getAtsauksmes() {
+        axios.get(`http://localhost:8088/document/getById`, { params: { id: id } })
+            .then(response => {
+                console.log('Response:', response.data);
+                setAtsauksmes(response.data);
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+    }
 
     function update(){
-            setOpen(true);
-    }
-    function save() {
         console.log(userData);
-        axios.post(`http://localhost:8088/api/accounts/edit`,userData )
-            .then(response => {
-              if (response.status===200){
-                  setShow(true);
-                  navigate("/auf/log");
-              }
-            })
     }
     function goToLogin(){
         navigate("/auf/log");
     }
     function userPosts(){
         navigate(`/private/account/${id}/posts`);
-    }
-    function userAtsauksmes(){
-        navigate(`/private/account/${id}/atsauksmes`);
-    }
-
-    function getFeedback() {
-        axios.get(`http://localhost:8088/document/docCount`, { params: { id: id } })
-            .then(response => {
-                console.log('Response:', response.data);
-                setActiveAtt(response.data);
-            })
-            .catch(error => {
-                console.error('Error fetching data:', error);
-            });
     }
 
     const style = {
@@ -101,9 +76,6 @@ const Account = () => {
     };
     return (
         <div>
-            <Alert show={show} variant="success">
-                <Alert.Heading className="d-flex justify-content-center">Izmaiņas ir saglabāti </Alert.Heading>
-            </Alert>
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -112,53 +84,33 @@ const Account = () => {
             >
                 <Box sx={style}>
                     <Typography id="modal-modal-title" variant="h6" component="h2">
-
+                        Sorry.
                     </Typography>
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                       Lai pieņemt izmaiņas jums vajadzēs vel reiz ieiet sava akauntā
+                        To perform this action you must log in.
                         <div className="button-container text-box">
 
-                            <button onClick={save} className=" btn-white ">Saglabāt</button>
-                            <button onClick={handleClose} className=" btn-white ">Atcelt</button>
+                            <button onClick={goToLogin} className=" btn-white ">Log in</button>
+                            <button onClick={handleClose} className=" btn-white ">Cancel</button>
 
                         </div>
                     </Typography>
                 </Box>
             </Modal>
             <Button as={Link} to="/" variant="secondary">
-                Atpakaļ
+                BACK
             </Button>
             <div>
                 <div style={{display: 'flex', gap: '20px', justifyContent: 'center', paddingTop: '100px'}}>
                     <div style={{ boxShadow:'0px 10px 10px 5px rgba(0, 0, 0, 0.5)', borderRadius:'20px',width: '45%',padding:'10px',background:'white'}}>
-                        {/*{posts.length ?*/}
-                        {/*    posts.map((post) =>*/}
-                        {/*        <PostCard key={post.id} id={post.id} post_header={post.post_header} salary={post.salary}*/}
-                        {/*                  post_type={post.post_type} company={post.company}/>*/}
-                        {/*    )*/}
-                        {/*    :*/}
-                        {/*    <p> List is empty</p>*/}
-                        {/*}*/}
-                        <Form>
-                            <Form.Group className="mb-3" controlId="formBasicEmail">
-                                <Form.Label>Lietotājavārds</Form.Label>
-                                <Form.Control  onChange={e =>
-                                                setUserDate({...userData, username: e.target.value})}
-                                               value={userData.username} placeholder="Lietotājavārds" />
-
-                            </Form.Group>
-
-
-
-                            <Form.Group controlId="formFile" className="mb-3">
-                                <Form.Label>CV</Form.Label>
-                                <Form.Control type="file" />
-                            </Form.Group>
-                            <Button onClick={update} variant="primary" >
-                                Saglabāt
-                            </Button>
-                        </Form>
-
+                        {posts.length ?
+                            posts.map((post) =>
+                                <PostCard owner={true} key={post.id} id={post.id} post_header={post.post_header} salary={post.salary}
+                                          post_type={post.post_type} company={post.company}/>
+                            )
+                            :
+                            <p>Jūs pagaidam nav sludinājumu  </p>
+                        }
                     </div>
 
                     <div style={{
@@ -184,17 +136,13 @@ const Account = () => {
                                 <Badge bg="success">Aktīvs</Badge> : <Badge bg="danger">Neaktīvs</Badge>}</a>
                             <p style={{verticalAlign: 'middle', margin: 0}}></p>
                         </div>
-                        <div style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
-                            <a style={{fontWeight: 'bold'}}>Aktīvas atsauksmes :  <Badge
-                                bg="primary">{activeAttachment}</Badge></a>
-                            <p style={{verticalAlign: 'middle', margin: 0}}></p>
-                        </div>
+
                         <div style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
                             <Button onClick={userPosts} variant="link">Apskatīt sludinājumus </Button>
                             <p style={{verticalAlign: 'middle', margin: 0}}></p>
                         </div>
                         <div style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
-                            <Button onClick={userAtsauksmes} variant="link">Apskatīt atsauksmes </Button>
+                            <Button variant="link">Apskatīt atsauksmes </Button>
                             <p style={{verticalAlign: 'middle', margin: 0}}></p>
                         </div>
                     </div>
@@ -208,4 +156,4 @@ const Account = () => {
     );
 };
 
-export default Account;
+export default Atsauksmes;

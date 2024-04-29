@@ -62,7 +62,8 @@ public class WebSecurityConfiguration   {
                                 .requestMatchers(HttpMethod.GET,"/post/**").permitAll()
                                 .requestMatchers(HttpMethod.POST,"/post/**").permitAll()
                                 .requestMatchers(HttpMethod.GET,"/people/**").permitAll()
-
+                                .requestMatchers(HttpMethod.GET,"/**").permitAll()
+                                .requestMatchers(HttpMethod.POST,"/**").permitAll()
                                 //.requestMatchers(HttpMethod.POST,"/login").permitAll()
 
                                // .requestMatchers("/**").authenticated()
