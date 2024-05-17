@@ -12,6 +12,9 @@ import TestMain from "../Components/TestMain";
 import Header from "../base/Header";
 import axios from "axios";
 import Cookies from "js-cookie";
+import Statistic from "../Components/Statistic";
+
+
 
 const GuestRoutes = () => {
     const now = new Date();
@@ -52,6 +55,7 @@ const GuestRoutes = () => {
                     <Route path="/demo" element={<Demo/>}/>
                     <Route path="/" element={<Posts/>}/>
                     <Route path="/mainTest" element={<TestMain/>}/>
+                    <Route path="/stats" element={<Statistic/>}/>
                 </Routes>
         </div>
     );

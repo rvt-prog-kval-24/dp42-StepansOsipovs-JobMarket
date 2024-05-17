@@ -1,45 +1,28 @@
 package com.example.BootApp.resources;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.example.BootApp.DTO.AuthenticationDTO;
-import com.example.BootApp.DTO.SetOwnerDTO;
-import com.example.BootApp.DTO.UpdateAccountDTO;
-import com.example.BootApp.DTO.ValidationErrorDTO;
+import com.example.BootApp.DTO.*;
 import com.example.BootApp.models.Account;
-import com.example.BootApp.models.Person;
-import com.example.BootApp.models.Post;
-import com.example.BootApp.secutity.AccountAuthenticationProvider;
-import com.example.BootApp.secutity.JWTFilter;
+import com.example.BootApp.models.Role;
+import com.example.BootApp.repo.AccountRepository;
+import com.example.BootApp.repo.RoleRepository;
 import com.example.BootApp.secutity.JWTUtil;
-import com.example.BootApp.services.AccountService;
 import com.example.BootApp.services.impl.AccountServiceImpl;
-import com.example.BootApp.services.impl.UserDetailsServiceImpl;
 import com.example.BootApp.util.AccountValidator;
 import com.example.BootApp.util.PersonValidator;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.security.auth.login.AccountNotFoundException;
-import java.net.URI;
-import java.sql.SQLException;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -51,9 +34,8 @@ public class AccountResource {
     private final AccountServiceImpl accountService;
     private final AuthenticationManager authenticationManager;
     private final AccountValidator accountValidator;
-
-
-
+    private final AccountRepository accountRepository;
+    private final RoleRepository roleRepository;
     @GetMapping("/getUsersByName")
     @ResponseBody
     public List<SetOwnerDTO> getUserByName(@RequestParam String name){
@@ -64,6 +46,50 @@ public class AccountResource {
     public ResponseEntity<Optional<Account>> show(@PathVariable("id") int id) {
         return ResponseEntity.ok(accountService.findOne(id));
     }
+    @GetMapping("/getByName/{name}")
+    public ResponseEntity<Optional<Account>> byName(@PathVariable("name") String name) {
+        return ResponseEntity.ok(accountRepository.findByUsername(name));
+    }
+
+    @PostMapping("/editByAdmin")
+    public ResponseEntity<?> updateByAdmin(@RequestBody UpdateAccountAdminDTO accountAdminDTO) {
+        // Найти роль по имени
+        Role role = roleRepository.findByName(accountAdminDTO.getRoles());
+
+        // Если роль не найдена, вернуть ошибку
+        if (role == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Role not found: " + accountAdminDTO.getRoles());
+        }
+
+        // Найти учетную запись по ID
+        Optional<Account> accountOptional = accountRepository.findById(accountAdminDTO.getId());
+
+        // Если учетная запись не найдена, вернуть ошибку
+        if (!accountOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Account not found with ID: " + accountAdminDTO.getId());
+        }
+
+        // Получить учетную запись и обновить поля
+        Account account = accountOptional.get();
+        account.setUsername(accountAdminDTO.getUsername());
+        account.setExpired(accountAdminDTO.isExpired());
+        account.setEnabled(accountAdminDTO.isEnabled());
+        account.setLocked(accountAdminDTO.isLocked());
+        account.setCredentialsexpired(accountAdminDTO.isCredentialsexpired());
+
+        // Используйте изменяемую коллекцию HashSet для установки ролей
+        Set<Role> roles = new HashSet<>(account.getRoles());
+        roles.clear();
+        roles.add(role);
+        account.setRoles(roles);
+
+        // Сохранить обновленную учетную запись
+        accountRepository.save(account);
+
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+
 
 
     @PostMapping("/edit")
@@ -102,7 +128,17 @@ public class AccountResource {
         return ResponseEntity.status(HttpStatus.OK).body(answer);
     }
 
-
+    @PostMapping("/change-password/{userId}/{oldPassword}/{confirmPassword}")
+    public ResponseEntity<?> changePassword(@PathVariable("userId") int userId,
+                                            @PathVariable("oldPassword") String oldPassword,
+                                            @PathVariable("confirmPassword") String newPassword) {
+        try {
+            accountService.changePassword(userId, oldPassword, newPassword);
+            return ResponseEntity.ok().body("Password updated successfully");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 
     @GetMapping
     public ResponseEntity<List<Account>>getAccount() {
@@ -141,7 +177,6 @@ public class AccountResource {
         UsernamePasswordAuthenticationToken authInputToken =
                 new UsernamePasswordAuthenticationToken(authenticationDTO.getUsername(),
                         authenticationDTO.getPassword());
-
         try {
             authenticationManager.authenticate(authInputToken);
         } catch (BadCredentialsException e) {
@@ -156,5 +191,9 @@ public class AccountResource {
 
     }
 
+    @GetMapping("/getAll")
+    public ResponseEntity<List<Account>> getAll() {
+        return ResponseEntity.ok(accountRepository.findAll());
+    }
 }
 

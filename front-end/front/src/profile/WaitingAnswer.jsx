@@ -5,12 +5,12 @@ import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "react-bootstrap/Button";
-import PostCard from "../Components/PostCard";
-import Badge from "react-bootstrap/Badge";
 import AtsauksmesCard from "./AtsauksmesCard";
+import Badge from "react-bootstrap/Badge";
+import AtsauksmesCardByOwner from "./AtsauksmesCardByOwner";
 
-const Atsauksmes = () => {
-    const {Uid}=useParams();
+const WaitingAnswer = () => {
+    const {id}=useParams();
     const [postInfo, setPostInfo] = useState([]);
     const navigate = useNavigate();
     const [open, setOpen] = React.useState(false);
@@ -20,7 +20,7 @@ const Atsauksmes = () => {
     let [posts,setPosts]=useState([])
 
     function getUser() {
-        axios.get(`http://localhost:8088/api/accounts/${Uid}`)
+        axios.get(`http://localhost:8088/api/accounts/${id}`)
             .then(response => {
                 setUserDate(response.data);
             });
@@ -28,7 +28,7 @@ const Atsauksmes = () => {
 
 
     function selectProducts(){
-        axios.get(`http://localhost:8088/post/getPostsByOwner/${Uid}` )
+        axios.get(`http://localhost:8088/post/getPostsByOwner/${id}` )
             .then(response => {
                 setPosts([]);
                 setPosts(response.data);
@@ -44,7 +44,7 @@ const Atsauksmes = () => {
     },[]);
 
     function getAtsauksmes() {
-        axios.get(`http://localhost:8088/document/getById`, { params: { id: Uid } })
+        axios.get(`http://localhost:8088/document/getFrom`, { params: { id: id } })
             .then(response => {
                 console.log('Response:', response.data);
                 setAtsauksmes(response.data);
@@ -61,7 +61,10 @@ const Atsauksmes = () => {
         navigate("/auf/log");
     }
     function userPosts(){
-        navigate(`/private/account/${Uid}/posts`);
+        navigate(`/private/account/${id}/posts`);
+    }
+    function feedback(){
+        navigate(`/private/account/${id}/atsauksmes`);
     }
     const handleGoBack = () => {
         navigate(-1); // Возвращает на предыдущую страницу
@@ -92,10 +95,8 @@ const Atsauksmes = () => {
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                         To perform this action you must log in.
                         <div className="button-container text-box">
-
                             <button onClick={goToLogin} className=" btn-white ">Log in</button>
                             <button onClick={handleClose} className=" btn-white ">Cancel</button>
-
                         </div>
                     </Typography>
                 </Box>
@@ -104,24 +105,18 @@ const Atsauksmes = () => {
                 Atpakaļ
             </Button>
             <div>
-                <div style={{display: 'flex', gap: '20px', justifyContent: 'center', paddingTop: '100px'}}>
-                    <div style={{
-                        boxShadow: '0px 10px 10px 5px rgba(0, 0, 0, 0.5)',
-                        borderRadius: '20px',
-                        width: '45%',
-                        padding: '10px',
-                        background: 'white'
-                    }}>
-                        <h3 style={{textAlign: "center"}}>Atsauksmes uz jūsu sludinājumiem </h3>
 
+                <div style={{display: 'flex', gap: '20px', justifyContent: 'center', paddingTop: '100px'}}>
+                    <div style={{ boxShadow:'0px 10px 10px 5px rgba(0, 0, 0, 0.5)', borderRadius:'20px',width: '45%',padding:'10px',background:'white'}}>
+                        <h3 style={{textAlign: "center"}}>Vakances, kurām pieteicāties</h3>
                         {atsauksmes.length ?
                             atsauksmes.map((value) =>
-                                <AtsauksmesCard byEmail={value.byEmail} byName={value.byName} byPhone={value.byPhone}
-                                                status={value.status}
-                                                toPost={value.toPost} id={value.id}/>
+
+                                <AtsauksmesCardByOwner byEmail={value.byEmail} byName={value.byName} byPhone={value.byPhone} status={value.status}
+                                                toPost={value.toPost} id={value.id} />
                             )
                             :
-                            <p>Jūs pagaidam nav sludinājumu </p>
+                            <p>Jūs pagaidam nav sludinājumu  </p>
                         }
                     </div>
 
@@ -155,7 +150,7 @@ const Atsauksmes = () => {
                             <p style={{verticalAlign: 'middle', margin: 0}}></p>
                         </div>
                         <div style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
-                            <Button variant="link">Apskatīt atsauksmes </Button>
+                            <Button onClick={feedback} variant="link">Apskatīt atsauksmes </Button>
                             <p style={{verticalAlign: 'middle', margin: 0}}></p>
                         </div>
                     </div>
@@ -169,4 +164,4 @@ const Atsauksmes = () => {
     );
 };
 
-export default Atsauksmes;
+export default WaitingAnswer;

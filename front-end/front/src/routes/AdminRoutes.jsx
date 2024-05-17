@@ -5,6 +5,10 @@ import axios from "axios";
 import Crossroads from "../Admin/Crossroads";
 import AdminMain from "../Admin/AdminMain";
 import Header from "../base/Header";
+import AdminHeader from "../base/AdminHeader";
+import AdminEditProfils from "../Admin/AdminEditProfils";
+import AdminEditPosts from "../Admin/AdminEditPosts";
+import EditPostByAdmin from "../Admin/EditPostByAdmin";
 
 const AdminRoutes = () => {
 
@@ -35,11 +39,15 @@ const AdminRoutes = () => {
     }, []);
     return (
         <div>
-            <Header/>
+            {/*<Header/>*/}
+            <AdminHeader/>
             <Routes>
                 <Route path="/demo" element={<Demo/>}/>
                 <Route path="/cross" element={<Crossroads/>}/>
                 <Route path="/main" element={<AdminMain/>}/>
+                <Route path="/editPosts" element={<AdminEditPosts/>}/>
+                <Route path="/editProfils" element={<AdminEditProfils/>}/>
+                <Route path="editPosts/edit/:id" element={<EditPostByAdmin/>}/>
             </Routes>
         </div>
     );

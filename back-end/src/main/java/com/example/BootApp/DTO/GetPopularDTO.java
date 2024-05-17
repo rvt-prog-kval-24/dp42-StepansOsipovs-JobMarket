@@ -7,13 +7,11 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class GetDocumentDTO {
-    private String byEmail;
-    private String byName;
-    private String byPhone;
+@AllArgsConstructor
+public class GetPopularDTO {
+
     private int toPost;
-    private String status;
-    private int id;
+
+    private Long apply_count;
 }

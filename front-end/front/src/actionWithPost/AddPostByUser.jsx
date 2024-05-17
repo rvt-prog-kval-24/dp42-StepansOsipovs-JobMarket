@@ -102,24 +102,54 @@ const AddPostByUser = () => {
     }
 
     // const [newItem, setNewItem] = useState({title:'',body:''});
-    function save(){
-        // handleAddItem();
-        console.log(newBody)
-        // const newItem = { title: newTitle, body: newBody };
-        // setNewItem({title: newTitle,body: newBody});
-        // setData([...data,{title:newTitle,body: newBody}]);
-        data=[{title:newTitle,body: newBody}];
-        const test={posts,data}
-        console.log(test);
-        axios.post(`http://localhost:8088/post/save`, test)
-            .then((response) => {
+    // function save(){
+    //     // handleAddItem();
+    //     console.log(newBody)
+    //     // const newItem = { title: newTitle, body: newBody };
+    //     // setNewItem({title: newTitle,body: newBody});
+    //     // setData([...data,{title:newTitle,body: newBody}]);
+    //     data=[{title:newTitle,body: newBody}];
+    //     setPost({...posts,file:file});
+    //     const test={posts,data}
+    //     axios.post(`http://localhost:8088/post/save`, test)
+    //         .then((response) => {
+    //
+    //
+    //             console.log('Success', response.data);
+    //             // navigate("/");
+    //
+    //         })
+    // }
+    function save() {
+        const newItem = { title: newTitle, body: newBody };
+            // setNewItem({title: newTitle,body: newBody});
+            // setData([...data,{title:newTitle,body: newBody}]);
+            data=[{title:newTitle,body: newBody}];
 
+            const test={posts,data}
+        const formData = new FormData();
+        formData.append("post", new Blob([JSON.stringify(test)], {
+            type: "application/json"
+        }));
+        if (file) {
+            formData.append("file", file);
+        }
 
-                console.log('Success', response.data);
-                // navigate("/");
-
+        axios.post('http://localhost:8088/post/save', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+            .then(response => {
+                console.log('Успех:', response.data);
+                navigate("/"); // или обработайте успех другим способом
             })
+            .catch(error => {
+                console.log(posts);
+                console.error('Ошибка:', error.response.data);
+            });
     }
+
     function validate() {
         setselaryError('');
         setErrors({});
@@ -164,28 +194,7 @@ const AddPostByUser = () => {
         setFile(event.target.files[0]);
     };
 
-    const handleUpload = async () => {
-        if (file) {
-            try {
-                const formData = new FormData();
-                formData.append('file', file);
 
-                // Отправляем запрос на сервер
-                await axios.post('http://localhost:8088/post/upload', formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
-                });
-
-                // После успешной загрузки можно добавить обработку ответа или выполнить действия после загрузки
-                console.log('Файл успешно загружен!');
-            } catch (error) {
-                console.error('Ошибка загрузки файла:', error);
-            }
-        } else {
-            console.error('Файл не выбран.');
-        }
-    };
 
 
 
@@ -369,16 +378,15 @@ const AddPostByUser = () => {
                                 <Form.Label>Sludinājuma attels  </Form.Label>
                                 <Form.Control type="file" onChange={handleFileChange} />
                                 <Form.Text className="text-muted">
-                                    Tikai PDF.
                                 </Form.Text>
                             </Form.Group>
                             {valid === true ?
                                 <div style={{display: 'flex', justifyContent: 'center'}}>
-                                    <button onClick={save}>Preview</button>
+                                    <button onClick={save}>Saglabat</button>
                                 </div> :
                                 <div></div>}
                             <div style={{display: 'flex', justifyContent: 'center'}}>
-                                <button onClick={validate} >Accept</button>
+                                <button onClick={validate} >Pārbaudit</button>
                             </div>
                         </div>
 

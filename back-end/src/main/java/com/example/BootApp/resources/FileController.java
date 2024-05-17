@@ -1,6 +1,7 @@
 package com.example.BootApp.resources;
 
 
+import com.example.BootApp.mail.EmailService;
 import com.example.BootApp.models.DBFile;
 import com.example.BootApp.services.impl.DBFileStorageService;
 import com.example.BootApp.util.UploadFileResponse;
@@ -29,7 +30,14 @@ public class FileController {
     private DBFileStorageService dbFileStorageService;
 
 
+    @Autowired
+    private EmailService emailService;
 
+    @PostMapping("/send")
+    public String sendEmail() {
+        emailService.sendSimpleMessage("s.osipov271204@gmail.com", "test", "test body");
+        return "Email sent successfully";
+    }
 
 
 

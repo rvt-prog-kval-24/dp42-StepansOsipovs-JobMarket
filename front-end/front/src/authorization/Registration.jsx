@@ -93,7 +93,7 @@ const Registration = () => {
                     </label>
 
                     <button type={"submit"} className="btn btn-white btn-animate">Register</button>
-
+                    <Link to="/auf/log">Jums jau ir profils?</Link>
                 </form>
 
             </div>

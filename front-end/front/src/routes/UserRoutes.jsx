@@ -15,6 +15,7 @@ import Account from "../profile/Account";
 import UserPosts from "../profile/UserPosts";
 import EditUserPost from "../profile/EditUserPost";
 import Atsauksmes from "../profile/Atsauksmes";
+import WaitingAnswer from "../profile/WaitingAnswer";
 
 const UserRoutes = () => {
     const now = new Date();
@@ -37,7 +38,7 @@ const UserRoutes = () => {
                 console.log(Cookies.get('userName'));
             })
             .catch((error) => {
-                if (error.response.status === 401||error.response.status===403) {
+                if (error.response.status === 401||error.response.status===403||error.response.status===400) {
                     navigate("/auf/log")
                 }
             });
@@ -58,8 +59,9 @@ const UserRoutes = () => {
                 <Route path="/edit/:id" element={<Edit/>}/>
                 <Route path="/account/:id" element={<Account/>}/>
                 <Route path="/account/:id/posts" element={<UserPosts/>}/>
-                <Route path="/account/:id/atsauksmes" element={<Atsauksmes/>}/>
+                <Route path="/account/:Uid/atsauksmes" element={<Atsauksmes/>}/>
                 <Route path="/account/:id/posts/edit/:postId" element={<EditUserPost/>}/>
+                <Route path="/account/:id/sent" element={<WaitingAnswer/>}/>
             </Routes>
         </div>
     );

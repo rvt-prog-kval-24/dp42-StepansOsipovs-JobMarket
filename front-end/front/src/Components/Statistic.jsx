@@ -1,8 +1,10 @@
 import React, {useEffect} from 'react';
-import CanvasJSReact from '@canvasjs/react-charts';
-import axios from "axios";
+import Badge from "react-bootstrap/Badge";
+import CanvasJSReact from "@canvasjs/react-charts";
 import {useNavigate} from "react-router-dom";
-const AdminMain = () => {
+import axios from "axios";
+
+const Statistic = () => {
     var CanvasJS = CanvasJSReact.CanvasJS;
     var CanvasJSChart = CanvasJSReact.CanvasJSChart;
     const [countData, setCountData] = React.useState([]);
@@ -42,6 +44,7 @@ const AdminMain = () => {
             });
     }
     const options = {
+        backgroundColor: "#b5f9ee",
         animationEnabled: true,
         exportEnabled: true,
         theme: "light1", // "light1", "dark1", "dark2"
@@ -56,6 +59,8 @@ const AdminMain = () => {
         }]
     }
     const options2 = {
+        backgroundColor: "#b5f9ee", // Цвет фона для второй диаграммы
+
         animationEnabled: true,
         exportEnabled: true,
         theme: "light1", // "light1", "dark1", "dark2"
@@ -71,15 +76,21 @@ const AdminMain = () => {
     }
     return (
         <div>
-            <CanvasJSChart options = {options}
-                /* onRef={ref => this.chart = ref} */
-            />
-            {/*<br/>*/}
-            <CanvasJSChart  options = {options2}
-                /* onRef={ref => this.chart = ref} */
-            />
+            <header style={{borderRadius: '40px',height:'100vh'}}>
+                {/*<div className={"colored"}>*/}
+                <h1 className={"main-header"}>IT Market Statistika</h1>
+                <div className="search-container">
+                    <CanvasJSChart options = {options}
+                        /* onRef={ref => this.chart = ref} */
+                    />
+                    {/*<br/>*/}
+                    <CanvasJSChart  options = {options2}
+                        /* onRef={ref => this.chart = ref} */
+                    />
+                </div>
+            </header>
         </div>
-    );
+);
 };
 
-export default AdminMain;
+export default Statistic;

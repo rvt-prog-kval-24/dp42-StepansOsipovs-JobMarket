@@ -14,18 +14,25 @@ const PostCard = ({id,post_header, salary,post_type,company,owner}) => {
 
             <div className={classes.product} key = {id}>
                 <div className={classes.circle}>
-                    <img src={image}/>
+                    <img
+                        src={`http://localhost:8088/post/downloadFile/${id}`}
+                        alt="Post Image"
+                        onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src = image;
+                        }}
+                    />
                 </div>
                 <div className={classes.content}>
                     {owner ?
-                        <h5 style={{fontWeight: 'bold'}}><Link to={`edit/${id}`}>{post_header}  Privat</Link></h5>
+                        <h5 style={{fontWeight: 'bold'}}><Link to={`edit/${id}`}>{post_header}  (Editable)</Link></h5>
                         :
                         <h5 style={{fontWeight: 'bold'}}><Link to={`public/show/${id}`}>{post_header}</Link></h5>
                     }
 
                     <hr/>
                     <h5>This post is shared by {company}</h5>
-                    <h6>Salary: {salary}$</h6>
+                    <h6>Salary: {salary}€/mēn</h6>
                 </div>
             </div>
             // <Card className="mx-2 my-2" style={{ width: '18rem' }}>

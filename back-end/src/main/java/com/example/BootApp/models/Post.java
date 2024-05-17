@@ -80,7 +80,7 @@ public class Post {
     private byte[] data;
     public Post(String post_header, String post_city,
                 String post_type, Date posts_start_day, Date posts_end_day,
-               String post_email,String post_contactPhone,Integer salary,String company,Account owner) {
+               String post_email,String post_contactPhone,Integer salary,String company,Account owner,byte[] data) {
         this.post_header = post_header;
         this.post_city = post_city;
         this.post_type = post_type;
@@ -91,6 +91,7 @@ public class Post {
         this.salary=salary;
         this.company=company;
         this.owner=owner;
+        this.data=data;
 
     }
 

@@ -1,13 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import Cookies from "js-cookie";
-import {Link, useNavigate, useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useForm} from "react-hook-form";
 import axios from "axios";
 import {Editor} from "@tinymce/tinymce-react";
 import Button from "react-bootstrap/Button";
 
-const EditUserPost = () => {
-   const {postId}=useParams()
+const EditPostByAdmin = () => {
+    const {postId}=useParams()
     const {id}=useParams()
     const [posts,setPost]=useState({postID:'',post_header:'',post_city:'',
         post_type:'Remote',posts_start_day:'',posts_end_day:'',post_contactPhone:'',post_email:'',salary:'',company:''});
@@ -82,21 +81,21 @@ const EditUserPost = () => {
     useEffect(()=> {
 
 
-            axios.get(`http://localhost:8088/post/${postId}`)
-                .then(response => {
-                    const p =response.data
+        axios.get(`http://localhost:8088/post/${id}`)
+            .then(response => {
+                const p =response.data
 
-                    if (!p.postAtributes || p.postAtributes.length === 0) {
-                        p.postAtributes = [{ id: '', title: '', body: '' }];
-                    }
+                if (!p.postAtributes || p.postAtributes.length === 0) {
+                    p.postAtributes = [{ id: '', title: '', body: '' }];
+                }
 
 
-                    setPost(p);
-                    setNewBody(response.data.postAtributes[0].body)
-                    setPost({...p,id:postId})
-                    setEditorValue(response.data.postAtributes ? response.data.postAtributes.body : '');
-                })
-                .catch(error => console.error('Ошибка загрузки данных поста:', error));
+                setPost(p);
+                setNewBody(response.data.postAtributes[0].body)
+                setPost({...p,id:postId})
+                setEditorValue(response.data.postAtributes ? response.data.postAtributes.body : '');
+            })
+            .catch(error => console.error('Ошибка загрузки данных поста:', error));
 
 
 
@@ -105,7 +104,14 @@ const EditUserPost = () => {
         //     post_type:'Remote',posts_start_day:'',posts_end_day:'',post_contactPhone:'',post_email:'',salary:'',company:''});
     },[]);
 
-
+    function deleteProducts() {
+        axios.post(`http://localhost:8088/post/del/${id}`)
+            .then(response => {
+                if (response.status === 200) {
+                    navigate("/admin/editPosts")
+                }
+            });
+    }
     function getWorkType(){
         axios.get('http://localhost:8088/post/getWorkType')
             .then(response => {
@@ -119,21 +125,22 @@ const EditUserPost = () => {
         // handleAddItem();
         console.log(newBody)
         console.log(posts)
+        posts.id = id;
         posts.postAtributes[0].body=newBody;
         // const newItem = { title: newTitle, body: newBody };
         // setNewItem({title: newTitle,body: newBody});
         // setData([...data,{title:newTitle,body: newBody}]);
         data=[{title:newTitle,body: newBody}];
         const test={posts}
-       posts.owner=id;
+        posts.owner=posts.owner.id;
         console.log(posts);
         axios.post(`http://localhost:8088/post/edit`, posts)
             .then((response) => {
 
-
+                navigate('/admin/editPosts');
                 console.log('Success', response.data);
                 // navigate("/");
-                navigate(`/private/account/${id}/posts`)
+
             })
     }
     function validate() {
@@ -202,17 +209,8 @@ const EditUserPost = () => {
             console.error('Файл не выбран.');
         }
     };
-    function deleteProducts() {
-        axios.post(`http://localhost:8088/post/del/${postId}`)
-            .then(response => {
-                if (response.status === 200) {
-                    navigate(`/private/account/${id}/posts`)
-                }
-            });
-    }
-    const handleGoBack = () => {
-        navigate(-1); // Возвращает на предыдущую страницу
-    };
+
+
 
     return (
         <div>
@@ -223,9 +221,6 @@ const EditUserPost = () => {
             {/*    /!*</div>*!/*/}
 
             {/*</header>*/}
-            <Button as={Link} variant="secondary" onClick={handleGoBack}>
-                Atpakaļ
-            </Button>
             <div style={{display: 'flex',justifyContent:'center',background:'#dfe5e1'}}>
 
                 <div  className={"section-content"}>
@@ -396,11 +391,11 @@ const EditUserPost = () => {
 
                         {valid === true ?
                             <div style={{display: 'flex', justifyContent: 'center'}}>
-                                <button onClick={edit}>Saglabat</button>
+                                <button onClick={edit}>Saglabāt</button>
                             </div> :
                             <div></div>}
                         <div style={{display: 'flex', justifyContent: 'center'}}>
-                            <button onClick={validate} >Pārbaudit</button>
+                            <button onClick={validate} >Pārbaudīt</button>
                         </div>
                     </div>
 
@@ -413,11 +408,4 @@ const EditUserPost = () => {
     );
 };
 
-export default EditUserPost;
-
-
-
-
-
-
-
+export default EditPostByAdmin;

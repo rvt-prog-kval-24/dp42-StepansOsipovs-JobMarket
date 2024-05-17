@@ -54,7 +54,9 @@ function getPost(){
     function goToLogin(){
         navigate("/auf/log");
     }
-
+    const handleGoBack = () => {
+        navigate(-1); // Возвращает на предыдущую страницу
+    };
     const style = {
         position: 'absolute' ,
         top: '50%',
@@ -89,8 +91,8 @@ function getPost(){
                 </Typography>
             </Box>
         </Modal>
-        <Button as={Link} to="/" variant="secondary">
-            BACK
+        <Button as={Link} variant="secondary" onClick={handleGoBack}>
+            Atpakaļ
         </Button>
         <div>
             <div style={{display: 'flex', gap: '20px', justifyContent: 'center', paddingTop: '100px'}}>

@@ -9,11 +9,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetDocumentDTO {
-    private String byEmail;
-    private String byName;
-    private String byPhone;
-    private int toPost;
-    private String status;
-    private int id;
+public class AdminPostSpecificationsDTO {
+
+    private Integer id;
+
 }

@@ -23,16 +23,47 @@ const Account = () => {
     const [postInfo, setPostInfo] = useState([]);
     const navigate = useNavigate();
     const [open, setOpen] = React.useState(false);
+    const [openPassword,setOpenPassword]=useState(false);
     const [userData,setUserDate]=useState({});
     let [posts, setPosts] = useState([]);
     const [show, setShow] = useState(false);
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error,setError]=useState('');
     const [activeAttachment,setActiveAtt]=useState('');
+    const [oldPassword, setOldPassword] = useState('');
+
     function getUser() {
         axios.get(`http://localhost:8088/api/accounts/${id}`)
             .then(response => {
                 setUserDate(response.data);
+            });
+    }
+
+    function updatePassword() {
+
+        if (oldPassword.length<8 || confirmPassword.length<8 ) {
+            setError('Jābut min 8 simboli ');
+            return;
+        }
+
+        if (oldPassword==='' || confirmPassword==='') {
+            setError('Ievadiet visus datus!');
+            return;
+        }
+
+
+        axios.post(`http://localhost:8088/api/accounts/change-password/${id}/${oldPassword}/${confirmPassword}`, {
+
+            oldPassword: oldPassword,
+            newPassword: confirmPassword
+        })
+            .then(response => {
+                setShow(true);
+                handleClosePassword();
+
+            })
+            .catch(error => {
+                setError(error.response.data || 'Failed to update password');
             });
     }
 
@@ -47,6 +78,9 @@ const Account = () => {
     }
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
+    const handleClosePassword = () => setOpenPassword(false);
+
     useEffect(()=> {
         getUser();
         selectProducts()
@@ -76,6 +110,10 @@ const Account = () => {
     function userAtsauksmes(){
         navigate(`/private/account/${id}/atsauksmes`);
     }
+    function setPasswordOpen(){
+        setOpenPassword(true);
+        setError('');
+    }
 
     function getFeedback() {
         axios.get(`http://localhost:8088/document/docCount`, { params: { id: id } })
@@ -104,6 +142,40 @@ const Account = () => {
             <Alert show={show} variant="success">
                 <Alert.Heading className="d-flex justify-content-center">Izmaiņas ir saglabāti </Alert.Heading>
             </Alert>
+
+            <Modal
+                open={openPassword}
+                onClose={handleClosePassword}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style}>
+                    <Alert show={error} variant="danger" onClose={() => setError('')} dismissible>
+                        <Alert.Heading>Error!</Alert.Heading>
+                        <p>{error}</p>
+                    </Alert>
+
+                    <Typography id="modal-modal-title" variant="h6" component="h2">
+
+                    </Typography>
+                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                        Atjaunot paroli
+                        <br/>
+                        <Form.Label >Veca parole</Form.Label>
+                        <Form.Control  onChange={e => setOldPassword(e.target.value)} />
+
+                        <Form.Label>Jauna parole</Form.Label>
+                        <Form.Control  onChange={e => setConfirmPassword(e.target.value)} />
+                        <div className="button-container text-box">
+
+                            <button onClick={updatePassword} className=" btn-white ">Saglabāt</button>
+                            <button onClick={handleClosePassword} className=" btn-white ">Atcelt</button>
+
+                        </div>
+                    </Typography>
+                </Box>
+            </Modal>
+
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -125,20 +197,13 @@ const Account = () => {
                     </Typography>
                 </Box>
             </Modal>
+
             <Button as={Link} to="/" variant="secondary">
                 Atpakaļ
             </Button>
             <div>
                 <div style={{display: 'flex', gap: '20px', justifyContent: 'center', paddingTop: '100px'}}>
                     <div style={{ boxShadow:'0px 10px 10px 5px rgba(0, 0, 0, 0.5)', borderRadius:'20px',width: '45%',padding:'10px',background:'white'}}>
-                        {/*{posts.length ?*/}
-                        {/*    posts.map((post) =>*/}
-                        {/*        <PostCard key={post.id} id={post.id} post_header={post.post_header} salary={post.salary}*/}
-                        {/*                  post_type={post.post_type} company={post.company}/>*/}
-                        {/*    )*/}
-                        {/*    :*/}
-                        {/*    <p> List is empty</p>*/}
-                        {/*}*/}
                         <Form>
                             <Form.Group className="mb-3" controlId="formBasicEmail">
                                 <Form.Label>Lietotājavārds</Form.Label>
@@ -151,8 +216,10 @@ const Account = () => {
 
 
                             <Form.Group controlId="formFile" className="mb-3">
-                                <Form.Label>CV</Form.Label>
-                                <Form.Control type="file" />
+                                <Form.Label>Jauna parole</Form.Label>
+                                <Button size="sm" onClick={setPasswordOpen} variant="primary" >
+                                    Atjaunot paroli
+                                </Button>
                             </Form.Group>
                             <Button onClick={update} variant="primary" >
                                 Saglabāt
@@ -190,7 +257,7 @@ const Account = () => {
                             <p style={{verticalAlign: 'middle', margin: 0}}></p>
                         </div>
                         <div style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
-                            <Button onClick={userPosts} variant="link">Apskatīt sludinājumus </Button>
+                            <Button onClick={userPosts} variant="link">Apskatīt  sludinājumus </Button>
                             <p style={{verticalAlign: 'middle', margin: 0}}></p>
                         </div>
                         <div style={{display: 'flex', alignItems: 'center', gap: '10px'}}>

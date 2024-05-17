@@ -2,16 +2,14 @@ package com.example.BootApp.services.impl;
 
 
 import com.example.BootApp.DTO.*;
-import com.example.BootApp.models.Account;
-import com.example.BootApp.models.Post;
-import com.example.BootApp.models.Person;
-import com.example.BootApp.models.Post_atribute;
+import com.example.BootApp.models.*;
 import com.example.BootApp.repo.AccountRepository;
 import com.example.BootApp.repo.AtributeRepo;
 import com.example.BootApp.repo.PeopleRepositorry;
 import com.example.BootApp.repo.PostsRepository;
 import com.example.BootApp.services.PostService;
 import com.example.BootApp.specifications.PostSpecifications;
+import com.example.BootApp.util.MyFileNotFoundException;
 import com.example.BootApp.util.PostMapperImpl;
 import com.example.BootApp.util.PostNotDeleted;
 import com.example.BootApp.util.PostNotFoundException;
@@ -22,7 +20,9 @@ import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.example.BootApp.DTO.UpdatePostDTO.EditAttributeDTO;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -66,22 +66,20 @@ public class PostServisImpl implements PostService {
 
     }
     @Transactional
-    public void save(AddPostDTO post) {
+    public void save(AddPostDTO post, MultipartFile foto) throws IOException {
         PostMapperImpl mapper=new PostMapperImpl();
         Post postForSave=  mapper.map(post.getPosts());
         Account person =accountRepository.findById(post.getPosts().getOwner().getId()).orElse(null);
         postForSave.setOwner(person);
+        postForSave.setData(foto.getBytes());
         Post savedPost = postsRepository.save(postForSave);
 
         for (Post_atribute obj : post.getData()) {
             obj.setPost(savedPost);
             atributeRepo.save(obj);
         }
-
-
-
-
     }
+
 
     @Override
     public DataForSwitchDTO getDataForFilerSwitch() {

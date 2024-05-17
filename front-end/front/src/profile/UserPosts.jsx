@@ -60,7 +60,9 @@ const UserPosts = () => {
     function userPosts(){
         navigate(`/private/account/${id}/posts`);
     }
-
+    const handleGoBack = () => {
+        navigate(-1); // Возвращает на предыдущую страницу
+    };
     const style = {
         position: 'absolute' ,
         top: '50%',
@@ -95,27 +97,27 @@ const UserPosts = () => {
                     </Typography>
                 </Box>
             </Modal>
-            <Button as={Link} to="/" variant="secondary">
-                BACK
+            <Button as={Link} variant="secondary" onClick={handleGoBack}>
+                Atpakaļ
             </Button>
             <div>
                 <div style={{display: 'flex', gap: '20px', justifyContent: 'center', paddingTop: '100px'}}>
-                    <div style={{ boxShadow:'0px 10px 10px 5px rgba(0, 0, 0, 0.5)', borderRadius:'20px',width: '45%',padding:'10px',background:'white'}}>
-                        {/*{posts.length ?*/}
-                        {/*    posts.map((post) =>*/}
-                        {/*        <PostCard key={post.id} id={post.id} post_header={post.post_header} salary={post.salary}*/}
-                        {/*                  post_type={post.post_type} company={post.company}/>*/}
-                        {/*    )*/}
-                        {/*    :*/}
-                        {/*    <p> List is empty</p>*/}
-                        {/*}*/}
+                    <div style={{
+                        boxShadow: '0px 10px 10px 5px rgba(0, 0, 0, 0.5)',
+                        borderRadius: '20px',
+                        width: '45%',
+                        padding: '10px',
+                        background: 'white'
+                    }}>
+                        <h3 style={{textAlign: "center"}}>Jūsu sludinājumi  </h3>
                         {posts.length ?
                             posts.map((post) =>
-                                <PostCard owner={true} key={post.id} id={post.id} post_header={post.post_header} salary={post.salary}
+                                <PostCard owner={true} key={post.id} id={post.id} post_header={post.post_header}
+                                          salary={post.salary}
                                           post_type={post.post_type} company={post.company}/>
                             )
                             :
-                            <p>Jūs pagaidam nav sludinājumu  </p>
+                            <p>Jūs pagaidam nav sludinājumu </p>
                         }
                     </div>
 
@@ -124,6 +126,7 @@ const UserPosts = () => {
                         borderRadius: '20px',
                         flexDirection: 'column',
                         alignItems: 'start',
+                        maxHeight:'200px',
                         gap: '10px',
                         padding: '10px',
                         background: 'white',

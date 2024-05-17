@@ -69,18 +69,21 @@ const Login = () => {
                 <form  onSubmit={handleSubmit(send)}>
                     <h3 className={"errorMsg"}>{error}</h3>
                 <label>
-                    Username:
+                    Lietotājavārds:
                     <input type="text" name="username"  onChange={e => setUsername(  e.target.value)} />
                 </label>
                 <label>
-                    Password:
+                    Parole:
                     <input type="password" name="password" onChange={e => setPassword(  e.target.value)} />
                 </label>
 
                     <button type={"submit"} className="btn btn-white btn-animate">Login</button>
-                    <h6>Don't have an account yet? </h6>
+
                     {/*<a href={}>Register now .</a>*/}
-                    <Link to="/auf/reg">Register now .</Link>
+                    <Link to="/auf/reg">Reģistrēties kā lietotājs .</Link>
+
+                    <Link to="/">Turpināt kā viesis .</Link>
+                    <Link to="/auf/reg/company">Reģistrēties kā uzņēmums .</Link>
                 </form>
 
         </div>

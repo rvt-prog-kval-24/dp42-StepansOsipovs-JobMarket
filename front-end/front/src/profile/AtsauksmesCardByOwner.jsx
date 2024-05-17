@@ -1,24 +1,24 @@
 import React, {useEffect, useState} from 'react';
-import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
-import axios from "axios";
 import {Link, useParams} from "react-router-dom";
+import axios from "axios";
+import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import Modal from "@mui/material/Modal";
-import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
-import Spinner from 'react-bootstrap/Spinner';
+import InputGroup from "react-bootstrap/InputGroup";
+import Form from "react-bootstrap/Form";
+import Spinner from "react-bootstrap/Spinner";
+import Card from "react-bootstrap/Card";
+import Button from "react-bootstrap/Button";
+import Badge from "react-bootstrap/Badge";
 
-const AtsauksmesCard = ({byEmail,byName,byPhone,status,toPost,id}) => {
+const AtsauksmesCardByOwner = ({byEmail,byName,byPhone,status,toPost,id}) => {
     const {Uid}=useParams();
     const [postInfo, setPostInfo] = useState([]);
     const [open, setOpen] = React.useState(false);
     const [statusChangeModal,setStatusChangeModal] = useState(false);
     const [newStatus, setNewStatus] = useState(status); // Исходное значение устанавливается текущим статусом
     const [loading, setLoading] = useState(false);
-    const [postExists, setPostExists] = useState(true);
-    const [openDelModal,setOpenDelModal] = useState(false);
+
     const style = {
         position: 'absolute' ,
         top: '50%',
@@ -30,21 +30,16 @@ const AtsauksmesCard = ({byEmail,byName,byPhone,status,toPost,id}) => {
         boxShadow: 24,
         p: 4,
     };
-    function getPost() {
-        axios.get(`http://localhost:8088/post/${toPost}`)
+    function getPost(){
+        axios.get('http://localhost:8088/post/'+toPost)
             .then(response => {
                 setPostInfo(response.data);
-                setPostExists(true);
             })
             .catch(error => {
-                if (error.response && error.response.status === 404) {
-                    setPostExists(false);
-                } else {
-                    console.error('Error fetching post:', error);
-                }
+                console.error('Error fetching data:', error);
+                setPostInfo({post_header:'Sludinājums ir nodzēsts'})
             });
     }
-
     // function download(){
     //     axios.get(`http://localhost:8088/document/get/${id}` )
     //         .then(response => {
@@ -117,16 +112,7 @@ const AtsauksmesCard = ({byEmail,byName,byPhone,status,toPost,id}) => {
         setNewStatus(status);
         window.location.reload();
     }
-    function clodeDelModal(){
-     setOpenDelModal(false)
-    }
-    function del(){
-        setOpenDelModal(true)
-
-    }
-
     return (
-        postExists ? (
         <div>
             <Modal
                 open={statusChangeModal}
@@ -136,7 +122,7 @@ const AtsauksmesCard = ({byEmail,byName,byPhone,status,toPost,id}) => {
             >
                 <Box sx={style}>
                     <Typography id="modal-modal-title" variant="h6" component="h2">
-                       Jauns status
+                        Jauns status
                     </Typography>
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                         <InputGroup size="sm" className="mb-3">
@@ -165,39 +151,6 @@ const AtsauksmesCard = ({byEmail,byName,byPhone,status,toPost,id}) => {
             </Modal>
 
 
-            <Modal
-                open={openDelModal}
-                onClose={clodeDelModal}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-            >
-                <Box sx={style}>
-                    <Typography id="modal-modal-title" variant="h6" component="h2">
-                        Ja jūs gribat nodzēst jums vajag noinformēt kandidātu. Jūs varat uzrakstīt viņam ziņu šeit.
-                    </Typography>
-                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        <InputGroup size="sm" className="mb-3">
-                            <Form.Control as="textarea" rows={8} />
-
-                        </InputGroup>
-                        {loading ?
-                            <Spinner animation="border" role="status">
-                                <span className="visually-hidden">Loading...</span>
-                            </Spinner>
-                            :
-                            <></>
-                        }
-
-                        <div className="button-container text-box">
-                            <button className=" btn-white ">Nosutīt</button>
-                            <button className=" btn-white ">Atcelt</button>
-                        </div>
-                    </Typography>
-                </Box>
-            </Modal>
-
-
-
 
             <Modal
                 open={open}
@@ -210,7 +163,7 @@ const AtsauksmesCard = ({byEmail,byName,byPhone,status,toPost,id}) => {
                         Uzmanību!
                     </Typography>
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        Jūs tiešam gribat nomainīt statusu uz citu?
+                        Jūs tiešam gribat nomainīt statusu uz pretējo?
                         <div className="button-container text-box">
 
                             <button onClick={changeStatus} className=" btn-white ">Nomainīt</button>
@@ -226,25 +179,31 @@ const AtsauksmesCard = ({byEmail,byName,byPhone,status,toPost,id}) => {
                     <Card.Title>Email: {byEmail}</Card.Title>
                     <Card.Title>Vārds: {byName}</Card.Title>
                     <Card.Title>Mob.num: {byPhone}</Card.Title>
-                    <Card.Title>Uz: <Link style={{color:"blue"}} to={`/private/account/${Uid}/posts/edit/${toPost}`}>{postInfo.post_header}</Link></Card.Title>
+                    {postInfo.post_header==="Sludinājums ir nodzēsts"? <Card.Title style={{color:"red"}}><>{postInfo.post_header}</></Card.Title>:
+                        <Card.Title>Uz: <Link style={{color:"blue"}} to={`/public/show/${toPost}`}>{postInfo.post_header}</Link></Card.Title>
+                    }
                     <Card.Text>
 
                     </Card.Text>
                     {/*{status ==="Apskatīts" ?<Button onClick={setOpen} variant="success">Apskatīts</Button>:<Button onClick={setOpen} variant="primary">Neapskatīts</Button>}*/}
                     {newStatus === "Apskatīts" ?
-                        <Button onClick={() => setOpen(true)} variant="success">Apskatīts</Button> :
+                        <Badge  bg="success">Apskatīts</Badge> :
                         (newStatus === "Neapskatīts" ?
-                                <Button onClick={() => setOpen(true)} variant="primary">{newStatus}</Button> :
-                                <Button onClick={() => setOpen(true)} variant="info">{newStatus}</Button>
+                                <h3>
+                                    <Badge bg="info"  >{newStatus}</Badge>
+                                </h3>
+                                :
+                                <h3>
+                                    <Badge bg="secondary">{newStatus}</Badge>
+                                </h3>
                         )
                     }
-                    <Button style={{marginTop:'7px'}} onClick={download} variant="primary">Download</Button>
-                    <Button style={{marginTop:'7px'}} onClick={del} variant="danger">Delete</Button>
+
                 </Card.Body>
             </Card>
         </div>
-        ) : null
+
     );
 };
 
-export default AtsauksmesCard;
+export default AtsauksmesCardByOwner;

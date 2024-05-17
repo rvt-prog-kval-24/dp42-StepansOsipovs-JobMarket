@@ -172,14 +172,14 @@ const Demo = () => {
                     <div className="search-container">
                         <label>
                             <h5>
-                                <Badge bg="secondary">FIND BY KEYWORD</Badge>
+                                <Badge bg="secondary">Atrast pēc atslēgvārda</Badge>
                             </h5>
 
                         </label>
                         <input style={{width:'15%'}} onChange={e => setSelectedFilterOptions({
                             ...selectedFilterOptions,
                             postHeader: e.target.value
-                        })} type="text" placeholder="Keyword"/>
+                        })} type="text" placeholder="Atslēgvārds"/>
                         <select
                             defaultValue={"default"}
                             onChange={e => setSelectedFilterOptions({
@@ -188,7 +188,7 @@ const Demo = () => {
                             })}
                         >
 
-                            <option value=''>Work type</option>
+                            <option value=''>Darba tips</option>
                             {filterOptions.postType.map((postType, index) =>
                                 <option value={postType} key={postType}> {postType}</option>
                             )}
@@ -200,7 +200,7 @@ const Demo = () => {
                             })}
                             defaultValue={"default"}
                         >
-                            <option value="">Company</option>
+                            <option value="">Uzņēmums</option>
 
                             {filterOptions.company.map((company, index) =>
                                 <option value={company} key={company}> {company}</option>
@@ -214,7 +214,7 @@ const Demo = () => {
                             defaultValue={"default"}
                         >
                             {/*{ filterOptions.postCity.map((city, index) => <p key={index}>{city}</p>)}*/}
-                            <option value="">City</option>
+                            <option value="">Pilsēta</option>
 
 
                             {filterOptions.postCity.map((city, index) =>
@@ -243,9 +243,9 @@ const Demo = () => {
                 <button style={{borderRadius: '30px'}} onClick={getDataWithFilter} className="btn btn-white btn-animate">
                     Atrast
                 </button>
-                <button style={{borderRadius: '30px'}} onClick={addPost} className="btn btn-white btn-animate">
-                    Post a job
-                </button>
+                {/*<button style={{borderRadius: '30px'}} onClick={addPost} className="btn btn-white btn-animate">*/}
+                {/*    Post a job*/}
+                {/*</button>*/}
 
 
             </div>
@@ -255,7 +255,7 @@ const Demo = () => {
 
                 <div className={classes.productList}>
                     <h3>
-                        <Badge bg="info">Latest advertisement</Badge>
+                        <Badge bg="info">Pedējie sludinājumi </Badge>
                     </h3>
                     {posts.length ?
                         posts.map((post) =>

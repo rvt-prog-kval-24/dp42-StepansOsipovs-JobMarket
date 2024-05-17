@@ -10,6 +10,7 @@ import com.example.BootApp.repo.RoleRepository;
 import com.example.BootApp.services.AccountService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
@@ -58,6 +59,25 @@ public class AccountServiceImpl implements AccountService {
 //      account.setPassword(password.get().getPassword());
 //        accountRepository.save(account);
     }
+
+
+    @Transactional
+    public void changePassword(Integer userId, String oldPassword, String newPassword) {
+        Account account = accountRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Проверяем, совпадает ли старый пароль
+        if (!encoder.matches(oldPassword, account.getPassword())) {
+            throw new RuntimeException("Veca parole nesakrīt ");
+        }
+
+        // Шифруем новый пароль
+        String encodedNewPassword = encoder.encode(newPassword);
+
+        // Устанавливаем новый пароль
+        account.setPassword(encodedNewPassword);
+        accountRepository.save(account);
+    }
+
 
     @Override
     public Optional<Account> findByUsername(String username) {

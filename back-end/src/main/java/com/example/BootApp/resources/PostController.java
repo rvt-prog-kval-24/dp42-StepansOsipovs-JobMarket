@@ -2,6 +2,7 @@ package com.example.BootApp.resources;
 
 import com.example.BootApp.DTO.*;
 import com.example.BootApp.models.Account;
+import com.example.BootApp.models.DBFile;
 import com.example.BootApp.models.Post;
 import com.example.BootApp.models.WorkType;
 import com.example.BootApp.repo.PeopleRepositorry;
@@ -9,6 +10,8 @@ import com.example.BootApp.repo.PostsRepository;
 import com.example.BootApp.secutity.AccountAuthenticationProvider;
 import com.example.BootApp.secutity.AccountDetails;
 import com.example.BootApp.services.impl.PostServisImpl;
+import com.example.BootApp.specifications.AdminPostSpecifications;
+import com.example.BootApp.specifications.PostSpecifications;
 import com.example.BootApp.util.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.micrometer.common.KeyValue;
@@ -16,7 +19,14 @@ import jakarta.validation.Valid;
 import net.coobird.thumbnailator.Thumbnails;
 import org.modelmapper.internal.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
@@ -26,6 +36,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -62,6 +73,7 @@ public static String UPLOAD_DIRECTORY = System.getProperty("test/projekti/BootAp
         this.postValidator = postValidator;
     }
 
+
     @PostMapping ("/filter")
     @ResponseBody
     public List<Post> getUsersWithFilter(@RequestBody FilterDataDTO dataDTO)  {
@@ -70,12 +82,20 @@ public static String UPLOAD_DIRECTORY = System.getProperty("test/projekti/BootAp
         if (result.isEmpty()){
             throw new EmptyResultAfterFilter();
         }
+
         return result;
 
-
-
-
-
+    }
+    @PostMapping ("/filterById/{id}")
+    @ResponseBody
+    public List<Post> getPostsWithFilterById(@PathVariable("id") int id)  {
+        AdminPostSpecificationsDTO specificationsDTO=new AdminPostSpecificationsDTO(id);
+        Specification<Post> spec = AdminPostSpecifications.filterPosts(specificationsDTO);
+        List<Post> result= postsRepository.findAll(spec);
+        if (result.isEmpty()){
+            throw new EmptyResultAfterFilter();
+        }
+        return result;
     }
     @PostMapping("/edit")
     @ResponseBody
@@ -224,34 +244,47 @@ public static String UPLOAD_DIRECTORY = System.getProperty("test/projekti/BootAp
 
     }
 
-    @ResponseBody
-    @PostMapping("/save")
-    public ResponseEntity<?> save(@RequestBody @Valid AddPostDTO post,
-                                             BindingResult bindingResult) throws JsonProcessingException {
-
-
-        postServisImpl.save(post);
-        return ResponseEntity.ok(HttpStatus.OK);
-
-
-        //        postValidator.validate(post,bindingResult);
-//        if (bindingResult.hasErrors()) {
-//
-//            List<ValidationErrorDTO> errors = bindingResult.getFieldErrors().stream()
-//                    .map(error -> new ValidationErrorDTO(error.getField(), error.getDefaultMessage()))
-//                    .collect(Collectors.toList());
-//
-//            return ResponseEntity.badRequest().body(errors);
-//        }
+//    @ResponseBody
+//    @PostMapping("/save")
+//    public ResponseEntity<?> save(@RequestBody @Valid AddPostDTO post,
+//                                             BindingResult bindingResult) throws JsonProcessingException {
 //
 //
-//
-//        postServisImpl.save(post,post.getOwner());
+////        postServisImpl.save(post);
 //        return ResponseEntity.ok(HttpStatus.OK);
+//    }
 
+    @PostMapping("/save")
+    public ResponseEntity<?> savePost(
+            @RequestPart("post") @Valid AddPostDTO postDTO,
+            @RequestPart(value = "file", required = false) MultipartFile file
+    )
+    {
+        System.out.println(postDTO.getPosts().getPost_header());
+        try {
+            postServisImpl.save(postDTO, file);
+            return ResponseEntity.ok("Пост успешно сохранен");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ошибка при сохранении поста");
+        }
+    }
+    @GetMapping("/downloadFile/{fileId}")
+    public ResponseEntity<byte[]> getPostData(@PathVariable String fileId) {
+        Optional<Post> post = postsRepository.findById(Integer.valueOf(fileId));
+        if (post.isPresent() && post.get().getData() != null) {
+            return ResponseEntity.ok()
+                    .contentType(MediaType.APPLICATION_OCTET_STREAM) // Тип контента может зависеть от вашего использования
+                    .body(post.get().getData());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
-
+    @GetMapping("/countByCompany")
+    public ResponseEntity<List<CompanyPostCountDTO>> getCountForAdmin() {
+        Pageable topFive = PageRequest.of(0, 5);
+        return ResponseEntity.ok(postsRepository.countPostsByCompany(topFive));
+    }
 
     @ResponseBody
     @PostMapping("/testSave")
