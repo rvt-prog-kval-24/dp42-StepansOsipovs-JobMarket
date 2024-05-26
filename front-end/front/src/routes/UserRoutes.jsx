@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Route, Routes, useNavigate} from "react-router-dom";
 import Demo from "../Components/Demo";
 import axios from "axios";
@@ -43,15 +43,19 @@ const UserRoutes = () => {
                 }
             });
     }
-
+    const [key, setKey] = useState(0);
+    const reloadHeader = () => {
+        setKey(prevKey => prevKey + 1);
+    }
     useEffect(() => {
         findJwt();
+        reloadHeader();
     }, []);
 
 
     return (
         <div>
-            <Header/>
+            <Header  key={key}/>
             <Routes>
                 <Route path="/addPost" element={<AddPostByUser/>}/>
                 <Route path="/apply/:owner/:postId" element={<Apply/>}/>

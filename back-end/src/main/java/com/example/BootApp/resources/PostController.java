@@ -307,7 +307,7 @@ public static String UPLOAD_DIRECTORY = System.getProperty("test/projekti/BootAp
 
     @ExceptionHandler
     private ResponseEntity<PostErrorResponse> handlException(EmptyResultAfterFilter e){
-        PostErrorResponse response=new PostErrorResponse("Posts with this settings not found ",System.currentTimeMillis());
+        PostErrorResponse response=new PostErrorResponse("Tāda sludinājuma nav ",System.currentTimeMillis());
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 
     }

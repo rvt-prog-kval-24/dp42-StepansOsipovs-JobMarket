@@ -24,39 +24,39 @@ import java.util.List;
 @AllArgsConstructor
 public class ValidatePostDTO {
 
-    @NotEmpty(message = "Must be not empty")
-    @Size(min = 2,max = 100,message = "LIMIT !!!")
+    @NotEmpty(message = "Nevar būt tukšs")
+    @Size(min = 2,max = 100,message = "Jabut 2-100 simbolu ")
     private String post_header;
 
-    @NotEmpty(message = "Must be not empty")
+    @NotEmpty(message = "Nevar būt tukšs")
 //    @Size(min = 2,max = 100,message = "LIMIT !!!")
     private String post_city;
 
-    @NotEmpty(message ="Must be not empty" )
+    @NotEmpty(message ="Nevar būt tukšs" )
     private String post_type;
 
-    @NotNull(message = "Must be not empty")
+    @NotNull(message = "Nevar būt tukšs")
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date posts_start_day;
 
-    @NotNull(message = "Must be not empty")
+    @NotNull(message = "Nevar būt tukšs")
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date posts_end_day;
 
-    @NotEmpty(message = "Must be not empty")
+    @NotEmpty(message = "Nevar būt tukšs")
     private String post_contactPhone;
 
-    @NotEmpty(message = "Must be not empty")
+    @NotEmpty(message = "Nevar būt tukšs")
     @Email(message = "Please provide correct email ")
     private String post_email;
 
-    @NotNull(message = "Must be not empty")
+    @NotNull(message = "Nevar būt tukšs")
     private Integer salary;
 
 
-    @NotEmpty(message = "Must be not empty")
+    @NotEmpty(message = "Nevar būt tukšs")
     private String company;
 
    // @NotEmpty(message = "Please chose the owner")

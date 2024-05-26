@@ -23,7 +23,7 @@ public class AccountValidator implements Validator {
 
         Account account=(Account) target;
         if (accountRepository.findByUsername(account.getUsername()).isPresent()){
-            errors.rejectValue("username","","This username is already taken");
+            errors.rejectValue("username","","Jau ir aizņemts ");
         }
 
     }

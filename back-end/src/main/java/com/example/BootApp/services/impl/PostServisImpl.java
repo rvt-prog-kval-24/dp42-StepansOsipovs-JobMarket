@@ -23,6 +23,7 @@ import com.example.BootApp.DTO.UpdatePostDTO.EditAttributeDTO;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -83,12 +84,12 @@ public class PostServisImpl implements PostService {
 
     @Override
     public DataForSwitchDTO getDataForFilerSwitch() {
-
+        Date today = new Date();
       DataForSwitchDTO data=new DataForSwitchDTO();
 
-      data.setCompany(postsRepository.selectDistinctCompany());
-      data.setPostType(postsRepository.selectDistinctType());
-      data.setPostCity(postsRepository.selectDistinctCity());
+      data.setCompany(postsRepository.selectDistinctCompany(today));
+      data.setPostType(postsRepository.selectDistinctType(today));
+      data.setPostCity(postsRepository.selectDistinctCity(today));
       return data;
 //      return postsRepository.selectDataForSwitch();
 
@@ -97,10 +98,12 @@ public class PostServisImpl implements PostService {
 
 
     public List<Post> getByOwner(int id){
-        return postsRepository.findAllByOwner_Id(id);
+        Date today = new Date();
+        return postsRepository.findAllByOwner_IdAndWithinDateRange(id,today);
     }
     public List<PostHeaderDTO> headers() {
-        return postsRepository.selectHeaders();
+        Date today = new Date();
+        return postsRepository.selectHeaders(today);
     }
     @Transactional
     public void delete(int id) {

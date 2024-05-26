@@ -4,6 +4,7 @@ import AddPostByUser from "../actionWithPost/AddPostByUser";
 import Edit from "../Components/Edit";
 import Login from "../authorization/Login";
 import Registration from "../authorization/Registration";
+import RegCompany from "../authorization/RegCompany";
 
 const AufRoutes = () => {
     return (
@@ -12,6 +13,7 @@ const AufRoutes = () => {
 
                 <Route path="/log" element={<Login/>}/>
                 <Route path="/reg" element={<Registration/>}/>
+                <Route path="/reg/company" element={<RegCompany/>}/>
 
             </Routes>
         </div>

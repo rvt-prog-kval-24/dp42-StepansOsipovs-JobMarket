@@ -31,10 +31,18 @@ const Login = () => {
                 const decodedToken = jwtDecode(localStorage.getItem("jwt"));
                 console.log(decodedToken.role);
                 if (decodedToken.role.includes("ROLE_ADMIN")){
+                    console.log("sdsdsdsd")
                    navigate("/admin/cross");
-                }else {
-                    navigate("/");
+                    return;
                 }
+                if (decodedToken.role.includes("ROLE_COMPANY")){
+                    navigate("/company/");
+                    return;
+                }
+
+                    console.log("AAAAAAAAA")
+                    navigate("/");
+
             })
             .catch((error) => {
                 if (error.response.status === 401) {

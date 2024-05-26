@@ -18,6 +18,7 @@ import UserRoutes from "./routes/UserRoutes";
 import AdminRoutes from "./routes/AdminRoutes";
 import Header from "./base/Header";
 import AufRoutes from "./routes/AufRoutes";
+import CompanyRoutes from "./routes/CompanyRoutes";
 
 function App() {
 
@@ -68,6 +69,7 @@ function App() {
 
              <Route path="/private/*" element={<UserRoutes />} />
              <Route path="/auf/*" element={<AufRoutes/>} />
+             <Route path="/company/*" element={<CompanyRoutes/>} />
          </Routes>
 
 

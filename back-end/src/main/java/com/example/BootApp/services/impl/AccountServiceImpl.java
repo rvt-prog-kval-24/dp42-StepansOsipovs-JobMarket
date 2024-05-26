@@ -32,7 +32,18 @@ public class AccountServiceImpl implements AccountService {
         this.peopleService = peopleService;
     }
 
-
+    @Override
+    public Account createAccountCompany(Account account) {
+        account.setPassword(encoder.encode(account.getPassword()));
+//        Person person=new Person();
+//        person.setUsername(account.getUsername());
+//        peopleService.save(person);
+        Role role = roleRepository.findByName("ROLE_COMPANY");
+        Set<Role> roles = new HashSet<>();
+        roles.add(role);
+        account.setRoles(roles);
+        return accountRepository.save(account);
+    }
     @Override
     public Account createAccount(Account account) {
         account.setPassword(encoder.encode(account.getPassword()));

@@ -8,7 +8,9 @@ import Cookies from "js-cookie";
 const Header = () => {
     const [isAuth ,setIsAuth]=useState(false);
     const navigate = useNavigate();
-    const id=Cookies.get('userID')
+    const id=Cookies.get('userID');
+    const [userId, setUserId] = useState(null);
+
     function checkAuth(){
         if (localStorage.getItem("jwt")){
             setIsAuth(true);
@@ -53,8 +55,8 @@ const Header = () => {
                     <Nav>
                         {isAuth && (
                             <>
-                                <Nav.Link  onClick={logout} >Logout</Nav.Link >
-                                <Nav.Link  onClick={account} >Your profile</Nav.Link >
+                                <Nav.Link  onClick={logout} >Iziet</Nav.Link >
+                                <Nav.Link  onClick={account} >Jūsu profilsn</Nav.Link >
                                 <Nav.Link  onClick={test} >Nosutītas atsauksmes</Nav.Link >
                             </>
                         )}

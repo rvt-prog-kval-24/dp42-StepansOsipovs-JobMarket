@@ -1,25 +1,17 @@
 import React, {useEffect, useState} from 'react';
 import {Link, useNavigate, useParams} from "react-router-dom";
 import axios from "axios";
-import Button from "react-bootstrap/Button";
-import place from "../icon/marker.png"
-import start from "../icon/calendar-clock.png"
-import end from "../icon/eye-crossed.png"
-import phone from "../icon/phone-call.png"
-import email from "../icon/envelope-plus.png"
-import company from "../icon/building.png"
-import type from "../icon/corporate-alt.png"
-import salary from "../icon/payroll-calendar.png"
+import Alert from "react-bootstrap/Alert";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import PostCard from "../Components/PostCard";
-import Form from 'react-bootstrap/Form';
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
 import Badge from "react-bootstrap/Badge";
-import Alert from "react-bootstrap/Alert";
 
-const Account = () => {
+const CompanyProfil = () => {
     const {id}=useParams();
+    const Uid=id;
     const [postInfo, setPostInfo] = useState([]);
     const navigate = useNavigate();
     const [open, setOpen] = React.useState(false);
@@ -90,28 +82,28 @@ const Account = () => {
 
 
     function update(){
-            setOpen(true);
+        setOpen(true);
     }
     function save() {
         console.log(userData);
         axios.post(`http://localhost:8088/api/accounts/edit`,userData )
             .then(response => {
-              if (response.status===200){
-                  setShow(true);
-                  navigate("/auf/log");
-              }
+                if (response.status===200){
+                    setShow(true);
+                    navigate("/auf/log");
+                }
             })
     }
     function goToLogin(){
         navigate("/auf/log");
     }
     function userPosts(){
-        navigate(`/`);
+        navigate(`/company`);
         // navigate(`/private/account/${id}/posts`);
     }
     function userAtsauksmes(){
         // navigate(`/private/account/${id}/atsauksmes`);
-        navigate(`/private/account/${id}/sent`);
+        navigate(`${Uid}/waitingAnswer`);
     }
     function setPasswordOpen(){
         setOpenPassword(true);
@@ -126,7 +118,6 @@ const Account = () => {
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
-
             });
         axios.get(`http://localhost:8088/document/getFrom`, { params: { id: id } })
             .then(response => {
@@ -135,10 +126,11 @@ const Account = () => {
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
-
             });
     }
-
+    const handleGoBack = () => {
+        navigate(-1); // Возвращает на предыдущую страницу
+    };
     const style = {
         position: 'absolute' ,
         top: '50%',
@@ -200,7 +192,7 @@ const Account = () => {
 
                     </Typography>
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                       Lai pieņemt izmaiņas jums vajadzēs vel reiz ieiet sava akauntā
+                        Lai pieņemt izmaiņas jums vajadzēs vel reiz ieiet sava akauntā
                         <div className="button-container text-box">
 
                             <button onClick={save} className=" btn-white ">Saglabāt</button>
@@ -211,7 +203,7 @@ const Account = () => {
                 </Box>
             </Modal>
 
-            <Button as={Link} to="/" variant="secondary">
+            <Button as={Link} variant="secondary" onClick={handleGoBack}>
                 Atpakaļ
             </Button>
             <div>
@@ -221,7 +213,7 @@ const Account = () => {
                             <Form.Group className="mb-3" controlId="formBasicEmail">
                                 <Form.Label>Lietotājavārds</Form.Label>
                                 <Form.Control  onChange={e =>
-                                                setUserDate({...userData, username: e.target.value})}
+                                    setUserDate({...userData, username: e.target.value})}
                                                value={userData.username} placeholder="Lietotājavārds" />
 
                             </Form.Group>
@@ -274,7 +266,7 @@ const Account = () => {
                             <p style={{verticalAlign: 'middle', margin: 0}}></p>
                         </div>
                         <div style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
-                            <Button onClick={userAtsauksmes} variant="link">Apskatīt jūsu atsauksmes</Button>
+                            <Button onClick={userAtsauksmes} variant="link">Apskatīt  atsauksmes</Button>
                             <p style={{verticalAlign: 'middle', margin: 0}}></p>
                         </div>
                     </div>
@@ -288,4 +280,4 @@ const Account = () => {
     );
 };
 
-export default Account;
+export default CompanyProfil;

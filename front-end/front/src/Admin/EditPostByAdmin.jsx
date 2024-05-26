@@ -229,7 +229,7 @@ const EditPostByAdmin = () => {
                     >
 
 
-                        <label className="required" form='city'>City</label>
+                        <label className="required" form='city'>Atrašanas vieta</label>
                         <input id='city' type="text" value={posts.post_city}
                                onChange={e => setPost({...posts, post_city: e.target.value})}/>
                         {errors.length ?
@@ -242,7 +242,7 @@ const EditPostByAdmin = () => {
                             }) :
                             <div></div>}
                         <hr/>
-                        <label className="required" form='phone'>Phone</label>
+                        <label className="required" form='phone'>Kontakt numurs</label>
                         <input id='phone' type='text' value={posts.post_contactPhone}
                                onChange={e => setPost({...posts, post_contactPhone: e.target.value})}/>
                         {errors.length ?
@@ -255,7 +255,7 @@ const EditPostByAdmin = () => {
                             }) :
                             <div></div>}
                         <hr/>
-                        <label className="required" form='email'>Email</label>
+                        <label className="required" form='email'>E-pasts</label>
                         <input id='email' type='text' value={posts.post_email}
                                onChange={e => setPost({...posts, post_email: e.target.value})}/>
                         {errors.length ?
@@ -268,7 +268,7 @@ const EditPostByAdmin = () => {
                             }) :
                             <div></div>}
                         <hr/>
-                        <label className="required" form='header'>Header</label>
+                        <label className="required" form='header'>Virsraksts</label>
                         <input id='header' type='text' value={posts.post_header}
                                onChange={e => setPost({...posts, post_header: e.target.value})}/>
                         {errors.length ?
@@ -283,7 +283,7 @@ const EditPostByAdmin = () => {
                         <hr/>
 
 
-                        <label className="required" form='post_type'>What type of work </label>
+                        <label className="required" form='post_type'>Darba tips</label>
                         <select
                             defaultValue="Remote" // Установите значение по умолчанию здесь
 
@@ -312,8 +312,9 @@ const EditPostByAdmin = () => {
                             }) :
                             <div></div>}
                         <hr/>
-                        <label className="required" form='posts_start_day'>Post release day</label>
-                        <input id='posts_start_day' value={posts.posts_start_day} type='date' min={todaysDate} onChange={handleStartDateChange}/>
+                        <label className="required" form='posts_start_day'>Sludinājuma publicēšanas diena</label>
+                        <input id='posts_start_day' value={posts.posts_start_day} type='date' min={todaysDate}
+                               onChange={handleStartDateChange}/>
                         {errors.length ?
                             errors.map((error, index) => {
                                 if (error.field === 'posts_start_day') {
@@ -324,7 +325,7 @@ const EditPostByAdmin = () => {
                             }) :
                             <div></div>}
                         <hr/>
-                        <label className="required" form='posts_end_day'>Post die day</label>
+                        <label className="required" form='posts_end_day'>Sludinājuma noņemšanas diena</label>
                         <input id='posts_end_day' type='date' min={minEndDate} max={maxDate} value={posts.posts_end_day}
                                onChange={e => setPost({...posts, posts_end_day: e.target.value})}/>
                         {errors.length ?
@@ -337,8 +338,9 @@ const EditPostByAdmin = () => {
                             }) :
                             <div></div>}
                         <hr/>
-                        <label className="required" form='salary'>Salary</label>
-                        <input id='salary' type="text" value={posts.salary} onChange={e => setPost({...posts, salary: e.target.value})}/>
+                        <label className="required" form='salary'>Alga</label>
+                        <input id='salary' type="text" value={posts.salary}
+                               onChange={e => setPost({...posts, salary: e.target.value})}/>
                         {errors.length ?
                             errors.map((error, index) => {
                                 if (error.field === 'salary') {
@@ -354,7 +356,7 @@ const EditPostByAdmin = () => {
                             <div></div>}
                         <hr/>
 
-                        <label className="required" form='company'>Company</label>
+                        <label className="required" form='company'>Uzņēmums</label>
                         <input id='company' type="text" value={posts.company}
                                onChange={e => setPost({...posts, company: e.target.value})}/>
                         {errors.length ?
@@ -369,10 +371,12 @@ const EditPostByAdmin = () => {
                         <hr/>
 
                         {valid === true ?
-                            <h3 style={{color: 'green'}}>Validation success</h3>
+                            <h3 style={{color: 'green'}}>Kļūdu nav</h3>
                             :
                             <div></div>}
+                        <label form='editor'>Saturs</label>
                         <Editor
+                            id='editor'
                             value={newBody}
                             onEditorChange={(newValue, editor) => setNewBody(newValue)}
                             init={{
@@ -381,9 +385,12 @@ const EditPostByAdmin = () => {
                                 branding: false,
                                 plugins: 'lists',
                                 toolbar: [
-                                    { name: 'history', items: ['undo', 'redo','bold', 'italic', 'underline'] },
-                                    { name: 'alignment', items: ['alignleft', 'aligncenter', 'alignright', 'alignjustify','outdent', 'indent'] },
-                                    { name: 'lists', items: ['bullist', 'numlist'] },
+                                    {name: 'history', items: ['undo', 'redo', 'bold', 'italic', 'underline']},
+                                    {
+                                        name: 'alignment',
+                                        items: ['alignleft', 'aligncenter', 'alignright', 'alignjustify', 'outdent', 'indent']
+                                    },
+                                    {name: 'lists', items: ['bullist', 'numlist']},
                                 ],
 
                             }}
@@ -395,7 +402,7 @@ const EditPostByAdmin = () => {
                             </div> :
                             <div></div>}
                         <div style={{display: 'flex', justifyContent: 'center'}}>
-                            <button onClick={validate} >Pārbaudīt</button>
+                            <button onClick={validate}>Pārbaudīt</button>
                         </div>
                     </div>
 

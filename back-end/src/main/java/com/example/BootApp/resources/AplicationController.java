@@ -81,7 +81,17 @@ public class AplicationController {
         emailService.sendSimpleMessage(documentOptional.get().getByEmail(), "Apply status update", "Jusu atsauksme status uz "+post.get().getPost_header()+"ir nomainīts uz "+statusUpdate.getStatus());
         return ResponseEntity.ok("Status updated successfully");
     }
+    @PostMapping("/delWithMessage")
+    public ResponseEntity<String> delWithMessage(@RequestBody StatusUpdateDTO statusUpdate) {
 
+        Optional<Document> documentOptional = documentRepository.findById(statusUpdate.getId());
+        Optional<Post> post=postsRepository.findById(documentOptional.get().getToPost());
+        Document document = documentOptional.get();
+        documentRepository.delete(document);
+        emailService.sendSimpleMessage(documentOptional.get().getByEmail(), "Atsauksme ir nodzēsta", "Jusu atsauksme  uz "+post.get().getPost_header()+"ir nodzēsta. Ar ziņu :"+statusUpdate.getStatus());
+        return ResponseEntity.ok(" Deleted successfully");
+
+    }
 //    @GetMapping("/get/{id}")
 //    public ResponseEntity<ByteArrayResource> downloadDocument(@PathVariable("id") Integer id) {
 //

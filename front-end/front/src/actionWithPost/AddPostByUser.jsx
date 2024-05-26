@@ -15,8 +15,9 @@ import TrixFile from "../Trix/TrixFile";
 import Form from "react-bootstrap/Form";
 const AddPostByUser = () => {
     const [testId,setTestId]=useState()
+    const name =Cookies.get('userName');
     const [posts,setPost]=useState({owner:{id:Cookies.get('userID')},post_header:'',post_city:'',
-        post_type:'Remote',posts_start_day:'',posts_end_day:'',post_contactPhone:'',post_email:'',salary:'',company:''});
+        post_type:'Remote',posts_start_day:'',posts_end_day:'',post_contactPhone:'',post_email:'',salary:'',company:name});
     const navigate = useNavigate();
     const [valid,setValid]=useState(null);
     const [people,setPeople]=useState({});
@@ -87,9 +88,10 @@ const AddPostByUser = () => {
     });
     useEffect(()=> {
 
+        // posts.company=name;
         getWorkType();
         setPost({owner:{id:Cookies.get('userID')},post_header:'',post_city:'',
-            post_type:'Remote',posts_start_day:'',posts_end_day:'',post_contactPhone:'',post_email:'',salary:'',company:''});
+            post_type:'Remote',posts_start_day:'',posts_end_day:'',post_contactPhone:'',post_email:'',salary:'',company:name});
     },[]);
 
 
@@ -142,7 +144,7 @@ const AddPostByUser = () => {
         })
             .then(response => {
                 console.log('Успех:', response.data);
-                navigate("/"); // или обработайте успех другим способом
+                navigate(-1);
             })
             .catch(error => {
                 console.log(posts);
@@ -212,10 +214,10 @@ const AddPostByUser = () => {
                     <div  className={"section-content"}>
 
                         <div className="form-container" style={{marginTop: '5%', background: 'white'}}
-                            >
+                        >
 
 
-                            <label className="required" form='city'>City</label>
+                            <label className="required" form='city'>Atrašanas vieta</label>
                             <input id='city' type="text"
                                    onChange={e => setPost({...posts, post_city: e.target.value})}/>
                             {errors.length ?
@@ -228,7 +230,7 @@ const AddPostByUser = () => {
                                 }) :
                                 <div></div>}
                             <hr/>
-                            <label className="required" form='phone'>Phone</label>
+                            <label className="required" form='phone'>Kontakt numurs</label>
                             <input id='phone' type='text'
                                    onChange={e => setPost({...posts, post_contactPhone: e.target.value})}/>
                             {errors.length ?
@@ -241,7 +243,7 @@ const AddPostByUser = () => {
                                 }) :
                                 <div></div>}
                             <hr/>
-                            <label className="required" form='email'>Email</label>
+                            <label className="required" form='email'>E-pasts</label>
                             <input id='email' type='text'
                                    onChange={e => setPost({...posts, post_email: e.target.value})}/>
                             {errors.length ?
@@ -254,7 +256,7 @@ const AddPostByUser = () => {
                                 }) :
                                 <div></div>}
                             <hr/>
-                            <label className="required" form='header'>Header</label>
+                            <label className="required" form='header'>Virsraksts</label>
                             <input id='header' type='text'
                                    onChange={e => setPost({...posts, post_header: e.target.value})}/>
                             {errors.length ?
@@ -269,7 +271,7 @@ const AddPostByUser = () => {
                             <hr/>
 
 
-                            <label className="required" form='post_type'>What type of work </label>
+                            <label className="required" form='post_type'>Darba tips </label>
                             <select
                                 defaultValue="Remote" // Установите значение по умолчанию здесь
 
@@ -298,7 +300,7 @@ const AddPostByUser = () => {
                                 }) :
                                 <div></div>}
                             <hr/>
-                            <label className="required" form='posts_start_day'>Post release day</label>
+                            <label className="required" form='posts_start_day'>Sludinājuma publicēšanas diena</label>
                             <input id='posts_start_day' type='date' min={todaysDate} onChange={handleStartDateChange}/>
                             {errors.length ?
                                 errors.map((error, index) => {
@@ -310,7 +312,7 @@ const AddPostByUser = () => {
                                 }) :
                                 <div></div>}
                             <hr/>
-                            <label className="required" form='posts_end_day'>Post die day</label>
+                            <label className="required" form='posts_end_day'>Sludinājuma noņemšanas diena</label>
                             <input id='posts_end_day' type='date' min={minEndDate} max={maxDate}
                                    onChange={e => setPost({...posts, posts_end_day: e.target.value})}/>
                             {errors.length ?
@@ -323,7 +325,7 @@ const AddPostByUser = () => {
                                 }) :
                                 <div></div>}
                             <hr/>
-                            <label className="required" form='salary'>Salary</label>
+                            <label className="required" form='salary'>Alga</label>
                             <input id='salary' type="text" onChange={e => setPost({...posts, salary: e.target.value})}/>
                             {errors.length ?
                                 errors.map((error, index) => {
@@ -340,9 +342,10 @@ const AddPostByUser = () => {
                                 <div></div>}
                             <hr/>
 
-                            <label className="required" form='company'>Company</label>
+                            <label form='company'>Uzņēmums</label>
                             <input id='company' type="text"
-                                   onChange={e => setPost({...posts, company: e.target.value})}/>
+                                   value={name}
+                                   readOnly={true}/>
                             {errors.length ?
                                 errors.map((error, index) => {
                                     if (error.field === 'company') {
@@ -355,10 +358,12 @@ const AddPostByUser = () => {
                             <hr/>
 
                             {valid === true ?
-                                <h3 style={{color: 'green'}}>Validation success</h3>
+                                <h3 style={{color: 'green'}}>Kļūdu nav </h3>
                                 :
                                 <div></div>}
+                            <label form='editor'>Saturs</label>
                             <Editor
+                                id='editor'
                                 value={newBody}
                                 onEditorChange={(newValue, editor) => setNewBody(newValue)}
                                 init={{
@@ -367,16 +372,19 @@ const AddPostByUser = () => {
                                     branding: false,
                                     plugins: 'lists',
                                     toolbar: [
-                                        { name: 'history', items: ['undo', 'redo','bold', 'italic', 'underline'] },
-                                        { name: 'alignment', items: ['alignleft', 'aligncenter', 'alignright', 'alignjustify','outdent', 'indent'] },
-                                        { name: 'lists', items: ['bullist', 'numlist'] },
+                                        {name: 'history', items: ['undo', 'redo', 'bold', 'italic', 'underline']},
+                                        {
+                                            name: 'alignment',
+                                            items: ['alignleft', 'aligncenter', 'alignright', 'alignjustify', 'outdent', 'indent']
+                                        },
+                                        {name: 'lists', items: ['bullist', 'numlist']},
                                     ],
 
                                 }}
                             />
                             <Form.Group className="mb-3" controlId="formBasicFile">
-                                <Form.Label>Sludinājuma attels  </Form.Label>
-                                <Form.Control type="file" onChange={handleFileChange} />
+                                <Form.Label className="required">Sludinājuma attels </Form.Label>
+                                <Form.Control type="file" onChange={handleFileChange}/>
                                 <Form.Text className="text-muted">
                                 </Form.Text>
                             </Form.Group>
@@ -386,7 +394,7 @@ const AddPostByUser = () => {
                                 </div> :
                                 <div></div>}
                             <div style={{display: 'flex', justifyContent: 'center'}}>
-                                <button onClick={validate} >Pārbaudit</button>
+                                <button onClick={validate}>Pārbaudit</button>
                             </div>
                         </div>
 

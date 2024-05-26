@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {BrowserRouter, Route, Routes, useNavigate} from "react-router-dom";
 import Posts from "../pages/Posts";
 import AddPost from "../Components/AddPost";
@@ -41,13 +41,17 @@ const GuestRoutes = () => {
 
             });
     }
-
+    const [key, setKey] = useState(0);
+    const reloadHeader = () => {
+        setKey(prevKey => prevKey + 1);
+    }
     useEffect(() => {
         findJwt();
+        reloadHeader();
     }, []);
     return (
         <div>
-                <Header/>
+                <Header key={key}/>
                 <Routes>
                     <Route path="/" element={<Demo/>} />
                     <Route path="/show/:id" element={<Show/>}/>

@@ -78,14 +78,14 @@ function getPost(){
         >
             <Box sx={style}>
                 <Typography id="modal-modal-title" variant="h6" component="h2">
-                    Sorry.
+                    Atvainojiet.
                 </Typography>
                 <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                    To perform this action you must log in.
+                    Lai veiktu šo darbību, jums ir jāpiesakās.
                     <div className="button-container text-box">
 
-                        <button onClick={goToLogin} className=" btn-white ">Log in</button>
-                        <button onClick={handleClose} className=" btn-white ">Cancel</button>
+                        <button onClick={goToLogin} className=" btn-white ">Ieiet</button>
+                        <button onClick={handleClose} className=" btn-white ">Atcelt</button>
 
                     </div>
                 </Typography>

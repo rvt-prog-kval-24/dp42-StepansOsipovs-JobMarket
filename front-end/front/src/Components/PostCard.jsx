@@ -4,9 +4,14 @@ import Card from 'react-bootstrap/Card';
 import {Link} from "react-router-dom";
 import {ListGroup} from "react-bootstrap";
 import image from "../images/icon-image-not-found-free-vector.jpg"
+import Cookies from "js-cookie";
 
 
-const PostCard = ({id,post_header, salary,post_type,company,owner}) => {
+const PostCard = ({id,post_header, salary,post_type,company,owner,admin}) => {
+    let userId;
+    if ( Cookies.get('userID')){
+         userId = Cookies.get('userID');
+    }
     if (id != null) {
 
 
@@ -25,11 +30,22 @@ const PostCard = ({id,post_header, salary,post_type,company,owner}) => {
                 </div>
                 <div className={classes.content}>
                     {owner ?
-                        <h5 style={{fontWeight: 'bold'}}><Link to={`edit/${id}`}>{post_header}  (Editable)</Link></h5>
+                        <h5 style={{fontWeight: 'bold'}}><Link to={`${userId}/edit/${id}`}>{post_header}  (Var rediģēt)</Link></h5>
+                        :
+                        admin ?
+                        <h5 style={{fontWeight: 'bold'}}><Link to={`edit/${id}`}>{post_header} (Var
+                            rediģēt)</Link></h5>
                         :
                         <h5 style={{fontWeight: 'bold'}}><Link to={`public/show/${id}`}>{post_header}</Link></h5>
-                    }
 
+                        // <h5 style={{fontWeight: 'bold'}}><Link to={`public/show/${id}`}>{post_header}</Link></h5>
+                    }
+                    {/*{admin ?*/}
+                    {/*    <h5 style={{fontWeight: 'bold'}}><Link to={`edit/${id}`}>{post_header} (Var*/}
+                    {/*        rediģēt)</Link></h5>*/}
+                    {/*    :*/}
+                    {/*    <h5 style={{fontWeight: 'bold'}}><Link to={`public/show/${id}`}>{post_header}</Link></h5>*/}
+                    {/*}*/}
                     <hr/>
                     <h5>This post is shared by {company}</h5>
                     <h6>Salary: {salary}€/mēn</h6>

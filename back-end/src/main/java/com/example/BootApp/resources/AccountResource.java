@@ -110,7 +110,22 @@ public class AccountResource {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
+    @PostMapping("/regCompany")
+    public ResponseEntity<?> createAccountCompany (@RequestBody @Valid Account account, BindingResult bindingResult) {
+        accountValidator.validate(account,bindingResult);
+        if (bindingResult.hasErrors()) {
 
+            List<ValidationErrorDTO> errors = bindingResult.getFieldErrors().stream()
+                    .map(error -> new ValidationErrorDTO(error.getField(), error.getDefaultMessage()))
+                    .collect(Collectors.toList());
+
+            return ResponseEntity.badRequest().body(errors);
+        }
+        accountService.createAccountCompany(account);
+        String token = jwtUtil.generateToken(account);
+        Map<String,String>answer=Map.of("jwt-token", token);
+        return ResponseEntity.status(HttpStatus.OK).body(answer);
+    }
     @PostMapping("/reg")
     public ResponseEntity<?> createAccount (@RequestBody @Valid Account account, BindingResult bindingResult) {
         accountValidator.validate(account,bindingResult);

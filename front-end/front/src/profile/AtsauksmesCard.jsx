@@ -19,6 +19,7 @@ const AtsauksmesCard = ({byEmail,byName,byPhone,status,toPost,id}) => {
     const [loading, setLoading] = useState(false);
     const [postExists, setPostExists] = useState(true);
     const [openDelModal,setOpenDelModal] = useState(false);
+    const [delMessage, setDelMessage] = useState('');
     const style = {
         position: 'absolute' ,
         top: '50%',
@@ -124,6 +125,22 @@ const AtsauksmesCard = ({byEmail,byName,byPhone,status,toPost,id}) => {
         setOpenDelModal(true)
 
     }
+    function deleteWithMessage(){
+        setLoading(true);
+        axios.post('http://localhost:8088/document/delWithMessage', {
+            id: id, // ID документа или другого ресурса, которому вы меняете статус
+            status: delMessage
+        })
+            .then(response => {
+                console.log('Status updated:', response.data);
+                setLoading(false);
+                setOpenDelModal(false);
+                window.location.reload();// Закрыть модальное окно после успешного обновления
+            })
+            .catch(error => {
+                console.error('Error updating status:', error);
+            });
+    }
 
     return (
         postExists ? (
@@ -177,7 +194,9 @@ const AtsauksmesCard = ({byEmail,byName,byPhone,status,toPost,id}) => {
                     </Typography>
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                         <InputGroup size="sm" className="mb-3">
-                            <Form.Control as="textarea" rows={8} />
+                            <Form.Control
+                                onChange={(e) => setDelMessage(e.target.value)}
+                                as="textarea" rows={8} />
 
                         </InputGroup>
                         {loading ?
@@ -189,8 +208,8 @@ const AtsauksmesCard = ({byEmail,byName,byPhone,status,toPost,id}) => {
                         }
 
                         <div className="button-container text-box">
-                            <button className=" btn-white ">Nosutīt</button>
-                            <button className=" btn-white ">Atcelt</button>
+                            <button onClick={deleteWithMessage} className=" btn-white ">Nosutīt</button>
+                            <button onClick={clodeDelModal} className=" btn-white ">Atcelt</button>
                         </div>
                     </Typography>
                 </Box>

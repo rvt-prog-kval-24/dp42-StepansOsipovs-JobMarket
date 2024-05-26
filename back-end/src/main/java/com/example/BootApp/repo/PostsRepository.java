@@ -15,6 +15,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,17 +25,23 @@ public interface PostsRepository extends JpaRepository<Post,Integer>, JpaSpecifi
 
     List<Post>findByOwner(Person owner);
 
+    @Query("SELECT p FROM Post p WHERE p.owner.id = :ownerId AND p.posts_start_day <= :today AND p.posts_end_day > :today")
+    List<Post> findAllByOwner_IdAndWithinDateRange(@Param("ownerId") int ownerId, @Param("today") Date today);
+
+
+
     List<Post> findAllByOwner_Id(int ownerId);
-    @Query("SELECT DISTINCT p.post_city FROM Post p")
-    List<String> selectDistinctCity();
-    @Query("SELECT DISTINCT p.company FROM Post p")
-    List<String> selectDistinctCompany();
 
-    @Query("SELECT DISTINCT p.post_type FROM Post p")
-    List<String> selectDistinctType();
+    @Query("SELECT DISTINCT p.post_city FROM Post p  WHERE  p.posts_start_day <= :today AND p.posts_end_day > :today")
+    List<String> selectDistinctCity(@Param("today") Date today);
+    @Query("SELECT DISTINCT p.company FROM Post p  WHERE  p.posts_start_day <= :today AND p.posts_end_day > :today")
+    List<String> selectDistinctCompany(@Param("today") Date today);
 
-    @Query("SELECT new com.example.BootApp.DTO.PostHeaderDTO(p.id, p.post_header,p.post_type,p.salary,p.company) FROM Post p")
-    List<PostHeaderDTO> selectHeaders();
+    @Query("SELECT DISTINCT p.post_type FROM Post p  WHERE  p.posts_start_day <= :today AND p.posts_end_day > :today")
+    List<String> selectDistinctType(@Param("today") Date today);
+
+    @Query("SELECT new com.example.BootApp.DTO.PostHeaderDTO(p.id, p.post_header,p.post_type,p.salary,p.company) FROM Post p  WHERE  p.posts_start_day <= :today AND p.posts_end_day > :today")
+    List<PostHeaderDTO> selectHeaders(@Param("today") Date today);
 
 
     @Query("SELECT new com.example.BootApp.DTO.CompanyPostCountDTO(p.company, COUNT(p)) FROM Post p GROUP BY p.company ORDER BY COUNT(p) DESC")

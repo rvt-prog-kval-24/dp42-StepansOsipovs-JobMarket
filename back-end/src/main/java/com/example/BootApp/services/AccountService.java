@@ -9,6 +9,8 @@ import java.util.Optional;
 
 public interface AccountService {
 
+    Account createAccountCompany(Account account);
+
     Account createAccount(Account account);
     Optional<Account> findByUsername(String username);
     List<Account> getAccounts();

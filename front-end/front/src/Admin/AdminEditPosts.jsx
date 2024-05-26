@@ -148,7 +148,7 @@ const AdminEditPosts = () => {
                         {/*}*/}
                         {posts.length ?
                             posts.map((post) =>
-                                <PostCard owner={true} key={post.id} id={post.id} post_header={post.post_header} salary={post.salary}
+                                <PostCard admin={true}  key={post.id} id={post.id} post_header={post.post_header} salary={post.salary}
                                           post_type={post.post_type} company={post.company}/>
                             )
                             :
@@ -168,12 +168,10 @@ const AdminEditPosts = () => {
                         boxShadow: '0px 10px 10px 5px rgba(0, 0, 0, 0.5)'
                     }}>
                         <div style={{display: 'flex', alignItems: 'center', gap: '10px', paddingTop: '5px'}}>
-
                             <a style={{fontWeight: 'bold'}}>Sludinājumu skaits: <Badge
                                 bg="primary">{posts.length}</Badge> </a>
                             {/*<button className="w-60">sdsd</button>*/}
                             <p style={{verticalAlign: 'middle', margin: 0}}></p>
-
                         </div>
                         <div style={{display: 'flex', alignItems: 'center', gap: '10px', paddingTop: '1px'}}>
                             <Form>

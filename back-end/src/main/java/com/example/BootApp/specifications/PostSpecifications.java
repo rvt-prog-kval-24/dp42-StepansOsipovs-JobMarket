@@ -13,6 +13,7 @@ public class PostSpecifications {
     public static Specification<Post> filterPosts(FilterDataDTO dataDTO) {
         return (root, query, criteriaBuilder) -> {
             Predicate predicate = criteriaBuilder.conjunction();
+            Date today = new Date();
             if (dataDTO.getPostHeader() != null && !dataDTO.getPostHeader().isEmpty()) {
                 predicate = criteriaBuilder.and(predicate, criteriaBuilder.like(root.get("post_header"), "%" + dataDTO.getPostHeader() + "%"));
             }
@@ -28,7 +29,8 @@ public class PostSpecifications {
             if (dataDTO.getCompany() != null && !dataDTO.getCompany().isEmpty()) {
                 predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(root.get("company"), dataDTO.getCompany()));
             }
-
+            predicate = criteriaBuilder.and(predicate, criteriaBuilder.lessThanOrEqualTo(root.get("posts_start_day"), today));
+            predicate = criteriaBuilder.and(predicate, criteriaBuilder.greaterThan(root.get("posts_end_day"), today));
             return predicate;
         };
     }

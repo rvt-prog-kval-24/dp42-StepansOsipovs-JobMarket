@@ -5,9 +5,7 @@ import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 
-
-
-const AdminHeader = () => {
+const CompanyHeader = () => {
     const [isAuth ,setIsAuth]=useState(false);
     const navigate = useNavigate();
     const id=Cookies.get('userID')
@@ -19,43 +17,50 @@ const AdminHeader = () => {
     useEffect(() => {
         checkAuth();
     }, []);
-
+    function goToLogin(){
+        navigate("/auf/log");
+    }
     function logout()
     {
         localStorage.clear("jwt");
         Cookies.remove("userID");
         Cookies.remove("userName");
         // window.location.reload();
-        navigate("/auf/log");
+        navigate(`/auf/log`);
 
     }
-    function goEditPosts() {
-        navigate("/admin/editPosts");
+    function account(){
+        navigate(`account/${id}`)
     }
-    function goEditProfil() {
-        navigate("/admin/editProfils")
-    }
-    function home(){
-        navigate("/admin/main")
-    }
+    const handleReset = () => {
+        window.location.reload();
 
+    }
+    const stats = () => {
+        navigate("stats")
+    }
+    const test = () => {
+        navigate(`/private/account/${id}/sent`)
+    }
     return (
         <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
             <Container>
-                <Navbar.Brand style={{cursor:"pointer"}} onClick={home}>IT market</Navbar.Brand>
+                <Navbar.Brand href="/company">IT market</Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="me-auto">
-                        <Nav.Link onClick={goEditPosts} >Rediģēt sludinājumus</Nav.Link>
-                        <Nav.Link onClick={goEditProfil}>Rediģēt profilus</Nav.Link>
+                        <Nav.Link onClick={stats}>Statistika</Nav.Link>
                     </Nav>
                     <Nav>
                         {isAuth && (
                             <>
-                                <Nav.Link  onClick={logout} >Logout</Nav.Link >
+                                <Nav.Link  onClick={logout} >Iziet</Nav.Link >
+                                <Nav.Link  onClick={account} >Profils</Nav.Link >
                             </>
                         )}
-
+                        {!isAuth && (
+                            <Nav.Link onClick={goToLogin} href="">Login</Nav.Link>
+                        )}
 
                     </Nav>
                 </Navbar.Collapse>
@@ -64,4 +69,4 @@ const AdminHeader = () => {
     );
 };
 
-export default AdminHeader;
+export default CompanyHeader;

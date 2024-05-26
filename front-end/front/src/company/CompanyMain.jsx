@@ -1,17 +1,16 @@
 import React, {useEffect, useState} from 'react';
-import '../styles/Demo.css';
-import axios from "axios"; // Import the CSS file properly
-import Badge from 'react-bootstrap/Badge';
-import classes from "../styles/main.module.css";
-import PostCard from "./PostCard";
 import Cookies from "js-cookie";
-import {Link, useNavigate} from "react-router-dom";
-import Box from '@mui/material/Box';
+import {useNavigate} from "react-router-dom";
+import axios from "axios";
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Badge from "react-bootstrap/Badge";
+import classes from "../styles/main.module.css";
+import PostCard from "../Components/PostCard";
 
-import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
-
-const Demo = () => {
+const CompanyMain = () => {
+    let id =Cookies.get('userID');
     let [posts, setPosts] = useState([]);
     const [filterOptions,setFilterOptions]=useState({
         postCity: [],
@@ -30,19 +29,21 @@ const Demo = () => {
         setShowFilter(!showFilter); // Инвертируем значение showForm при каждом нажатии на кнопку
     };
     function selectProducts(){
-        axios.get('http://localhost:8088/post/getHeaders' )
+        axios.get(`http://localhost:8088/post/getPostsByOwner/${id}` )
             .then(response => {
                 setPosts([]);
                 setPosts(response.data);
-
             })
+            .catch((error) => {
+                window.location.reload();
+            });
 
     }
 
     function addPost(){
         if (localStorage.getItem("jwt"))
         {
-            navigate("/private/addPost");
+            navigate("/company/addPost");
         }
         else handleOpen();
     }
@@ -83,34 +84,20 @@ const Demo = () => {
         fontSize: '2em', // Изменение размера смайлика
     };
     useEffect(() => {
+       console.log(Cookies.get('userID'));
         selectProducts();
         selectDataForFilter();
         // if (localStorage.getItem("jwt")){
         //     setIsAuth(true);
         // }
         checkAuth();
-
     }, []);
-    // useEffect(() => {
-    //     const reloadCount = sessionStorage.getItem('reloadCount') || 0;
-    //     if (reloadCount < 2) {
-    //         sessionStorage.setItem('reloadCount', Number(reloadCount) + 1);
-    //         window.location.reload();
-    //     } else {
-    //         selectProducts();
-    //         selectDataForFilter();
-    //         checkAuth();
-    //     }
-    //
-    //     // Обнуление счетчика при уходе с роутера
-    //     return () => {
-    //         sessionStorage.setItem('reloadCount', 0);
-    //     };
-    // }, []);
+
     function checkAuth(){
         if (localStorage.getItem("jwt")){
             setIsAuth(true);
         }
+
     }
 
     function logout()
@@ -152,14 +139,14 @@ const Demo = () => {
             >
                 <Box sx={style}>
                     <Typography id="modal-modal-title" variant="h6" component="h2">
-                        Atvainojiet.
+                        Sorry.
                     </Typography>
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        Lai veiktu šo darbību, jums ir jāpiesakās.
+                        To perform this action you must log in.
                         <div className="button-container text-box">
 
-                            <button onClick={goToLogin} className=" btn-white ">Ieiet</button>
-                            <button onClick={handleClose} className=" btn-white ">Atcelt</button>
+                            <button onClick={goToLogin} className=" btn-white ">Log in</button>
+                            <button onClick={handleClose} className=" btn-white ">Cancel</button>
 
                         </div>
                     </Typography>
@@ -167,7 +154,7 @@ const Demo = () => {
             </Modal>
             <header style={{borderRadius:'40px'}}>
                 {/*<div className={"colored"}>*/}
-                    <h1 className={"main-header"}>IT Market</h1>
+                <h1 className={"main-header"}>IT Market  company</h1>
                 {/*</div>*/}
                 {/*<nav>*/}
                 {/*    <ul style={{marginTop:'3%'}}>*/}
@@ -186,68 +173,69 @@ const Demo = () => {
                 {/*    <input  onChange={e => setSelectedFilterOptions({...selectedFilterOptions, postHeader: e.target.value})} type="text" placeholder="Keyword" />*/}
                 {/*</div>*/}
                 {/*{showFilter && (*/}
-                    <div className="search-container">
-                        <label>
-                            <h5>
-                                <Badge bg="secondary">Atrast pēc atslēgvārda</Badge>
-                            </h5>
+                {/*<div className="search-container">*/}
+                {/*    <label>*/}
+                {/*        <h5>*/}
+                {/*            <Badge bg="secondary">Atrast pēc atslēgvārda</Badge>*/}
+                {/*        </h5>*/}
 
-                        </label>
-                        <input style={{width:'15%'}} onChange={e => setSelectedFilterOptions({
-                            ...selectedFilterOptions,
-                            postHeader: e.target.value
-                        })} type="text" placeholder="Atslēgvārds"/>
-                        <select
-                            defaultValue={"default"}
-                            onChange={e => setSelectedFilterOptions({
-                                ...selectedFilterOptions,
-                                postType: e.target.value
-                            })}
-                        >
+                {/*    </label>*/}
+                {/*    <input style={{width:'15%'}} onChange={e => setSelectedFilterOptions({*/}
+                {/*        ...selectedFilterOptions,*/}
+                {/*        postHeader: e.target.value*/}
+                {/*    })} type="text" placeholder="Atslēgvārds"/>*/}
+                {/*    <select*/}
+                {/*        defaultValue={"default"}*/}
+                {/*        onChange={e => setSelectedFilterOptions({*/}
+                {/*            ...selectedFilterOptions,*/}
+                {/*            postType: e.target.value*/}
+                {/*        })}*/}
+                {/*    >*/}
 
-                            <option value=''>Darba tips</option>
-                            {filterOptions.postType.map((postType, index) =>
-                                <option value={postType} key={postType}> {postType}</option>
-                            )}
-                        </select>
-                        <select
-                            onChange={e => setSelectedFilterOptions({
-                                ...selectedFilterOptions,
-                                company: e.target.value
-                            })}
-                            defaultValue={"default"}
-                        >
-                            <option value="">Uzņēmums</option>
+                {/*        <option value=''>Darba tips</option>*/}
+                {/*        {filterOptions.postType.map((postType, index) =>*/}
+                {/*            <option value={postType} key={postType}> {postType}</option>*/}
+                {/*        )}*/}
+                {/*    </select>*/}
+                {/*    /!*<select*!/*/}
+                {/*    /!*    onChange={e => setSelectedFilterOptions({*!/*/}
+                {/*    /!*        ...selectedFilterOptions,*!/*/}
+                {/*    /!*        company: e.target.value*!/*/}
+                {/*    /!*    })}*!/*/}
+                {/*    /!*    defaultValue={"default"}*!/*/}
+                {/*    /!*>*!/*/}
+                {/*    /!*    <option value="">Uzņēmums</option>*!/*/}
 
-                            {filterOptions.company.map((company, index) =>
-                                <option value={company} key={company}> {company}</option>
-                            )}
-                        </select>
-                        <select
-                            onChange={e => setSelectedFilterOptions({
-                                ...selectedFilterOptions,
-                                postCity: e.target.value
-                            })}
-                            defaultValue={"default"}
-                        >
-                            {/*{ filterOptions.postCity.map((city, index) => <p key={index}>{city}</p>)}*/}
-                            <option value="">Pilsēta</option>
+                {/*    /!*    {filterOptions.company.map((company, index) =>*!/*/}
+                {/*    /!*        <option value={company} key={company}> {company}</option>*!/*/}
+                {/*    /!*    )}*!/*/}
+                {/*    /!*</select>*!/*/}
+                {/*    <select*/}
+                {/*        onChange={e => setSelectedFilterOptions({*/}
+                {/*            ...selectedFilterOptions,*/}
+                {/*            postCity: e.target.value*/}
+                {/*        })}*/}
+                {/*        defaultValue={"default"}*/}
+                {/*    >*/}
+                {/*        /!*{ filterOptions.postCity.map((city, index) => <p key={index}>{city}</p>)}*!/*/}
+                {/*        <option value="">Pilsēta</option>*/}
 
 
-                            {filterOptions.postCity.map((city, index) =>
-                                <option value={city} key={city}> {city}</option>
-                            )}
-                        </select>
+                {/*        {filterOptions.postCity.map((city, index) =>*/}
+                {/*            <option value={city} key={city}> {city}</option>*/}
+                {/*        )}*/}
+                {/*    </select>*/}
 
-                        {/*<button style={{borderRadius: '30px'}} onClick={handleReset}*/}
-                        {/*        className="btn btn-blue btn-animate">Clear*/}
-                        {/*    filter*/}
-                        {/*</button>*/}
-                    </div>
+                {/*    /!*<button style={{borderRadius: '30px'}} onClick={handleReset}*!/*/}
+                {/*    /!*        className="btn btn-blue btn-animate">Clear*!/*/}
+                {/*    /!*    filter*!/*/}
+                {/*    /!*</button>*!/*/}
+                {/*</div>*/}
 
                 {/*)}*/}
-                <button style={{borderRadius: '30px'}} onClick={handleReset} className="btn btn-blue btn-animate">Notirīt
-                </button>
+                {/*<button style={{borderRadius: '30px'}} onClick={handleReset} className="btn btn-blue btn-animate">Clear*/}
+                {/*    filter*/}
+                {/*</button>*/}
 
                 {error ?
                     <p><h2>{error.message}</h2>      <span role="img" aria-label="sad" style={enlargedStyle}>😔</span>
@@ -256,12 +244,12 @@ const Demo = () => {
             </header>
             <div className="button-container text-box">
 
-                <button style={{borderRadius: '30px'}} onClick={getDataWithFilter} className="btn btn-white btn-animate">
-                    Atrast
-                </button>
-                {/*<button style={{borderRadius: '30px'}} onClick={addPost} className="btn btn-white btn-animate">*/}
-                {/*    Post a job*/}
+                {/*<button style={{borderRadius: '30px'}} onClick={getDataWithFilter} className="btn btn-white btn-animate">*/}
+                {/*    Atrast*/}
                 {/*</button>*/}
+                <button style={{borderRadius: '30px'}} onClick={addPost} className="btn btn-white btn-animate">
+                    Nopublicēt sludinājumu
+                </button>
 
 
             </div>
@@ -271,15 +259,15 @@ const Demo = () => {
 
                 <div className={classes.productList}>
                     <h3>
-                        <Badge bg="info">Pedējie sludinājumi </Badge>
+                        <Badge bg="info">Jūsu sludinājumi</Badge>
                     </h3>
                     {posts.length ?
                         posts.map((post) =>
-                            <PostCard key={post.id} id={post.id} post_header={post.post_header} salary={post.salary}
+                            <PostCard owner={true} key={post.id} id={post.id} post_header={post.post_header} salary={post.salary}
                                       post_type={post.post_type} company={post.company}/>
                         )
                         :
-                        <p> List is empty</p>
+                        <p> Jums pagaidam nav sludinājumu </p>
                     }
                 </div>
             </main>
@@ -288,4 +276,4 @@ const Demo = () => {
     );
 };
 
-export default Demo;
+export default CompanyMain;
