@@ -25,8 +25,8 @@ public interface PostsRepository extends JpaRepository<Post,Integer>, JpaSpecifi
 
     List<Post>findByOwner(Person owner);
 
-    @Query("SELECT p FROM Post p WHERE p.owner.id = :ownerId AND p.posts_start_day <= :today AND p.posts_end_day > :today")
-    List<Post> findAllByOwner_IdAndWithinDateRange(@Param("ownerId") int ownerId, @Param("today") Date today);
+    @Query("SELECT p FROM Post p WHERE p.owner.id = :ownerId ")
+    List<Post> findAllByOwner_IdAndWithinDateRange(@Param("ownerId") int ownerId);
 
 
 

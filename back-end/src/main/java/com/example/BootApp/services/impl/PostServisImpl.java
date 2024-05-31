@@ -98,8 +98,8 @@ public class PostServisImpl implements PostService {
 
 
     public List<Post> getByOwner(int id){
-        Date today = new Date();
-        return postsRepository.findAllByOwner_IdAndWithinDateRange(id,today);
+//        Date today = new Date();
+        return postsRepository.findAllByOwner_IdAndWithinDateRange(id);
     }
     public List<PostHeaderDTO> headers() {
         Date today = new Date();

@@ -71,6 +71,7 @@ const RegCompany = () => {
                     flexDirection: 'column',
                     alignItems: 'start',
                     gap: '10px',
+                    marginBottom:'50px',
                     padding: '20px',
                     marginTop:'20px',
                     background: 'white',

@@ -185,7 +185,7 @@ const AdminEditPosts = () => {
                                     />
                                 </Form.Group>
                                 <Form.Group>
-                                    <Button className=" btn btn-white btn-animate" style={{borderRadius: '30px'}} onClick={() => searchById(Pid)}>Search</Button>
+                                    <Button className=" btn btn-white btn-animate" style={{borderRadius: '30px'}} onClick={() => searchById(Pid)}>Meklēt</Button>
                                 </Form.Group>
                             </Form>
                         </div>
